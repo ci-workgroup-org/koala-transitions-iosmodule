@@ -5,7 +5,7 @@
 	"enterpriseTeam": true,
 	"configurations": {
 		"Debug" : {
-    		"scheme_name": "KoalaTranistions-Example",
+    		"scheme_name": "KoalaTransitions-Example",
     		"build_configuration": "Debug",
     		"export_method" : "enterprise"
 		}
