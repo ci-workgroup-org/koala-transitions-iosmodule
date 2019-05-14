@@ -33,29 +33,26 @@ public class ZoomAnimator: NSObject, Animator {
         let finalFrame: CGRect
         let scaleTransform: CGAffineTransform
         if reversed {
-             initialFrame = fromView.frame
-             finalFrame = originFrame
-            
+            initialFrame = fromView.frame
+            finalFrame = originFrame
+
             let xScaleFactor = finalFrame.width / initialFrame.width
-            
+
             let yScaleFactor = finalFrame.height / initialFrame.height
 
-             scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+            scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
         } else {
-            
             initialFrame = originFrame
             finalFrame = fromView.frame
-            
+
             let xScaleFactor =
                 initialFrame.width / finalFrame.width
-            
+
             let yScaleFactor =
                 initialFrame.height / finalFrame.height
-            
 
             scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
         }
-        
 
         if !reversed {
             fromView.transform = scaleTransform
@@ -68,7 +65,7 @@ public class ZoomAnimator: NSObject, Animator {
 
         containerView.addSubview(toView)
         if reversed {
-            containerView.bringSubview(toFront: fromView)
+            containerView.bringSubviewToFront(fromView)
         }
 
         UIView.animate(withDuration: duration,
@@ -76,17 +73,16 @@ public class ZoomAnimator: NSObject, Animator {
                        usingSpringWithDamping: 0.4,
                        initialSpringVelocity: 0.0,
                        animations: {
-                            if reserved {
-                                fromView.transform = scaleTransform
-                                fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-                            } else {
-                                toView.transform = scaleTransform
-                                toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-                            }
+                           if self.reversed {
+                               fromView.transform = scaleTransform
+                               fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                           } else {
+                               toView.transform = scaleTransform
+                               toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                           }
                        },
                        completion: { _ in
                            transitionContext.completeTransition(true)
-                        }
-        )
+        })
     }
 }
