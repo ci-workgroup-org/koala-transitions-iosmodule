@@ -1,18 +1,25 @@
 //
+import Foundation
 //  Transitioner.swift
 //  KoalaTransitions
 //
 //  Created by boulder on 5/13/19.
 //
-
-import Foundation
 import UIKit
 
 public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
-    public var originFrame = CGRect.zero
-    public let animator: UIViewControllerAnimatedTransitioning
+    public let animator: Animator
 
-    public init(animator: UIViewControllerAnimatedTransitioning) {
+    public var playDirection: AnimationDirection {
+        get {
+            return animator.playDirection
+        }
+        set {
+            animator.playDirection = newValue
+        }
+    }
+
+    public init(animator: Animator) {
         self.animator = animator
     }
 

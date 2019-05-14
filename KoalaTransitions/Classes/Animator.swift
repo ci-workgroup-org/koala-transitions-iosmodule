@@ -9,5 +9,10 @@ import Foundation
 import UIKit
 
 public protocol Animator: UIViewControllerAnimatedTransitioning {
-    var reversed: Bool { get set }
+    var playDirection: AnimationDirection { get set }
+}
+
+public enum AnimationDirection {
+    case forward
+    case backward
 }

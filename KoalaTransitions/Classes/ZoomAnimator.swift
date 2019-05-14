@@ -9,13 +9,12 @@ import UIKit
 
 public class ZoomAnimator: NSObject, Animator {
     public let duration = 3.0
-    public var reversed: Bool
+    public var playDirection: AnimationDirection
     public let originFrame: CGRect
-    public var dismissCompletion: (() -> Void)?
 
-    public init(_ originFrame: CGRect = CGRect.zero, reversed: Bool = false) {
+    public init(_ originFrame: CGRect = CGRect.zero, direction: AnimationDirection = .forward) {
         self.originFrame = originFrame
-        self.reversed = reversed
+        playDirection = direction
     }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -32,7 +31,21 @@ public class ZoomAnimator: NSObject, Animator {
         let initialFrame: CGRect
         let finalFrame: CGRect
         let scaleTransform: CGAffineTransform
-        if reversed {
+
+        switch playDirection {
+        case .forward:
+            initialFrame = originFrame
+            finalFrame = toView.frame
+
+            let xScaleFactor = initialFrame.width / finalFrame.width
+            let yScaleFactor = initialFrame.height / finalFrame.height
+            scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+
+            toView.transform = scaleTransform
+            toView.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
+            toView.clipsToBounds = true
+
+        case .backward:
             initialFrame = fromView.frame
             finalFrame = originFrame
 
@@ -41,44 +54,25 @@ public class ZoomAnimator: NSObject, Animator {
             let yScaleFactor = finalFrame.height / initialFrame.height
 
             scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
-        } else {
-            initialFrame = originFrame
-            finalFrame = fromView.frame
 
-            let xScaleFactor =
-                initialFrame.width / finalFrame.width
-
-            let yScaleFactor =
-                initialFrame.height / finalFrame.height
-
-            scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+//            toView.transform = scaleTransform
+//            toView.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
+//            toView.clipsToBounds = true
         }
-
-        if !reversed {
-            fromView.transform = scaleTransform
-            fromView.center = CGPoint(
-                x: initialFrame.midX,
-                y: initialFrame.midY
-            )
-            fromView.clipsToBounds = true
-        }
-
         containerView.addSubview(toView)
-        if reversed {
-            containerView.bringSubviewToFront(fromView)
-        }
 
         UIView.animate(withDuration: duration,
                        delay: 0.0,
                        usingSpringWithDamping: 0.4,
                        initialSpringVelocity: 0.0,
                        animations: {
-                           if self.reversed {
+                           switch self.playDirection {
+                           case .forward:
+                               toView.transform = CGAffineTransform.identity
+                               toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                           case .backward:
                                fromView.transform = scaleTransform
                                fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-                           } else {
-                               toView.transform = scaleTransform
-                               toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
                            }
                        },
                        completion: { _ in

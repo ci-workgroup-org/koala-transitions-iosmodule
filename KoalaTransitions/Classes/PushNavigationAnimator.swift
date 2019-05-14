@@ -18,7 +18,7 @@ public enum TargetPanDirection: Int {
 
 public class PushNavigationAnimator: NSObject, Animator {
     var direction: TargetPanDirection
-    public var reversed = false
+    public var playDirection: AnimationDirection = .forward
 
     public init(direction: TargetPanDirection = .fromRightToLeft) {
         self.direction = direction
@@ -32,13 +32,9 @@ public class PushNavigationAnimator: NSObject, Animator {
         let toViewController = context.viewController(forKey: UITransitionContextViewControllerKey.to)!
         let fromViewController = context.viewController(forKey: UITransitionContextViewControllerKey.from)!
 
-        if reversed == false {
+        switch playDirection {
+        case .forward:
             context.containerView.addSubview(toViewController.view)
-        } else {
-            context.containerView.insertSubview(toViewController.view, belowSubview: fromViewController.view)
-        }
-
-        if reversed {
             var transform: CGAffineTransform?
             switch direction {
             case .fromLeftToRight:
@@ -66,7 +62,8 @@ public class PushNavigationAnimator: NSObject, Animator {
 
             })
 
-        } else {
+        case .backward:
+            context.containerView.insertSubview(toViewController.view, belowSubview: fromViewController.view)
             switch direction {
             case .fromLeftToRight:
                 toViewController.view.transform = CGAffineTransform(translationX: -toViewController.view.bounds.size.width, y: 0)
