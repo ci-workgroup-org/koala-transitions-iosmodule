@@ -1,0 +1,6 @@
+framework module KoalaTransitions {
+  umbrella header "KoalaTransitions-umbrella.h"
+
+  export *
+  module * { export * }
+}
