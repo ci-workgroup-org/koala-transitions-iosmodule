@@ -1,0 +1,74 @@
+# requirements
+require 'fileutils'
+require 'xcodeproj'
+
+$FAZU_JENKINS_REPORT_PATH = "fazu/static_jenkins_reports.php".shellescape()
+$shell_command_generate_static_reports="php #{$FAZU_JENKINS_REPORT_PATH}"
+
+#
+# This will shut down all the simulators
+#
+def shutdown_simulators()
+  #system("xcrun simctl list | grep \"Booted\" | awk '{print substr($3,2,length($3)-2)}' | xargs xcrun simctl shutdown")
+  system("ps aux | grep \"Xcode.app/Contents/Developer/Applications/Simulator.app\" | grep -v grep | awk '{print $2}' | xargs kill -9")
+end
+
+def perform_tests_func(scheme_name, configuration_name, product_name)
+  build_config = configuration_name.sub! 'Release', 'Debug'
+  workspace_filename = ""
+  project_filename = ""
+  Dir.chdir("../") do
+    workspace_filename=sh("find . -maxdepth 1 -name \"*.xcworkspace\" -print -quit")
+    workspace_filename.slice! "./"
+    workspace_filename.slice! "\n"
+  end
+
+  Dir.chdir("../") do
+    project_filename=sh("find . -maxdepth 1 -name \"*.xcodeproj\" -print -quit")
+    project_filename.slice! "./"
+    project_filename.slice! "\n"
+  end
+
+  shutdown_simulators()
+  reset_simulators
+  begin
+    if $device.to_s.empty? then
+      scan(derived_data_path: "build", configuration: build_config, scheme: scheme_name, code_coverage: true, output_directory: 'build/reports')
+    else
+      scan(derived_data_path: "build", configuration: build_config, scheme: scheme_name, code_coverage: true, output_directory: 'build/reports', device: $device)
+    end
+  rescue Exception => e
+    system("echo \"Test failed moving on why #{e}!\"")
+    system("echo \"#{e.class.name}\"")
+    if e.message .eql? "Error building the application - see the log above" then
+      raise
+    end
+  end
+
+  if File.file?("../build/reports/report.html") then
+    File.rename("../build/reports/report.html", "../build/reports/#{scheme_name}_report.html")
+    File.rename("../build/reports/report.junit", "../build/reports/#{scheme_name}_report.junit")
+  end
+
+  begin
+    coverage_files_to_ignore = [
+       '../*',
+       'Pods/*',
+    ]
+
+    binary_file = "build/Build/Products/#{configuration_name}-iphonesimulator"
+    binary_file = "#{binary_file}/#{product_name}.app/#{product_name}"
+    slather(ignore: coverage_files_to_ignore, build_directory: "build",binary_file: binary_file,cobertura_xml: true, scheme: scheme_name, workspace: workspace_filename,output_directory: "build/reports", jenkins: true, proj: project_filename)
+    slather(ignore: coverage_files_to_ignore, build_directory: "build",binary_file: binary_file, scheme: scheme_name, workspace: workspace_filename,output_directory: "build/reports/coverage_html", jenkins: true, proj: project_filename, html: true)
+    if File.file?("../build/reports/cobertura.xml") then
+      File.rename("../build/reports/cobertura.xml", "../build/reports/#{product_name}_cobertura.xml")
+    end
+  rescue Exception => e
+  end
+end
+
+def reports()
+  Dir.chdir("../") do
+    system($shell_command_generate_static_reports)
+  end
+end

@@ -1,0 +1,3 @@
+team_name "Fuzz Productions"
+team_id "VQK4K6Q9UY"
+apple_id ENV['APPLE_USER']

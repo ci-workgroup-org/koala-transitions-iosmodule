@@ -8,30 +8,21 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KoalaTransitions'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of KoalaTransitions.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
+  s.version          = '0.0.1'
+  s.summary          = 'Provide Controller to Controller tansitions'
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+
+Provide Controller to Controller tansitions required for KoalaMobile, replacing Hero
+
+
                        DESC
 
-  s.homepage         = 'https://github.com/nick@fuzzproductions.com/KoalaTransitions'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/fuzz-productions/koala-transitions-iosmodule'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'nick@fuzzproductions.com' => 'Nick@Fuzzproductions.com' }
-  s.source           = { :git => 'https://github.com/nick@fuzzproductions.com/KoalaTransitions.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
+  s.source           = { :git => 'git@github.com:fuzz-productions/koala-transitions-iosmodule.git', :tag => s.version.to_s }
   s.ios.deployment_target = '11.0'
-
   s.source_files = 'KoalaTransitions/Classes/**/*'
   s.swift_version = '5.0'
 
-  # s.dependency 'AFNetworking', '~> 2.3'
 end

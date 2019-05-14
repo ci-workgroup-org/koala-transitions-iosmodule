@@ -1,0 +1,359 @@
+# requirements
+require 'fileutils'
+require 'xcodeproj'
+require 'json'
+
+def loadConfig(current_lane_name, options)
+    # load the desired configuration matching the passed in key
+    if current_lane_name .eql? $internal_deploy_testflight_lane_name or
+      current_lane_name .eql? $internal_deploy_appstore_lane_name then
+      if options.has_key?(:scheme) then
+        $configuration_scheme_name = options[:scheme]
+        $configuration_build_configuration = "Release"
+        $configuration_export = "app-store"
+      else
+        load_default_configuration(current_lane_name, options)
+      end
+    else
+      if options.has_key?(:key) && !options.has_key?(:batch) then
+        load_configuration_with_key(options[:key])
+      else
+        if !options.has_key?(:batch) then
+          load_default_configuration(current_lane_name, options)
+        end
+      end
+    end
+end
+
+def updateDependencies()
+  init_update_git_submodules()
+  install_pods()
+  install_carthage()
+end
+
+#
+# This will be called in the before_all call and is part of the
+# deploy lane pre-lane routine
+#
+# Parameter: ensure_clean_repo : <bool>
+#
+def before_deploy ()
+  clear_derived_data
+end
+
+def load_default_configuration(current_lane_name, options)
+  Dir.chdir("../") do
+    target_name=sh("xcodebuild clean -dry-run -showBuildSettings 2>/dev/null | grep -i 'TARGET_NAME'").strip.sub!("TARGET_NAME = ","")
+    $configuration_scheme_name=target_name
+    if options.has_key?(:scheme) then
+      $configuration_scheme_name = options[:scheme]
+    end
+    if current_lane_name .eql? $internal_deploy_testflight_lane_name or
+      current_lane_name .eql? $internal_deploy_appstore_lane_name then
+      $configuration_build_configuration = "Release"
+      $configuration_export = "appstore"
+    else
+      $configuration_build_configuration = "Debug"
+      if options.has_key?(:config) then
+        $configuration_build_configuration = options[:config]
+      end
+      $configuration_export = "enterprise"
+    end
+    $configuration_product_name=sh("xcodebuild clean -dry-run -target '#{target_name}' -configuration '#{$configuration_build_configuration}' -showBuildSettings 2>/dev/null | grep -i ' PRODUCT_NAME = '").strip.sub!("PRODUCT_NAME = ","")
+  end
+end
+
+#
+# This will load the global configuration variables for the given key
+#
+# Param: <key>
+#
+def load_configuration_with_key (key, debug = false)
+
+  $configuration_name = key
+  Dir.chdir("../") do
+
+    key=Shellwords.escape(key)
+
+    configs = $configFileJSON["configurations"]
+    $configuration = configs[$configuration_name]
+
+    $device = $configFileJSON["device"]
+
+    if $configuration then
+
+      # grab all settings for the given configuration
+      $configuration_scheme_name=$configuration["scheme_name"]
+      $configuration_build_configuration=$configuration["build_configuration"]
+      $configuration_export=$configuration["export_method"]
+      if ($configuration["xcargs"] and $configuration["xcargs"].to_s != '' ) then
+        $configuration_xcargs="GCC_PREPROCESSOR_DEFINITIONS='$GCC_PREPROCESSOR_DEFINITIONS " + $configuration["xcargs"] + "'"
+      end
+      $configuration_product_name=sh("xcodebuild clean -dry-run -scheme '#{$configuration_scheme_name}' -configuration '#{$configuration_build_configuration}' -showBuildSettings 2>/dev/null | grep -i ' PRODUCT_NAME = '").strip.sub!("PRODUCT_NAME = ","")
+
+
+      if debug then
+        puts "#{$configuration_scheme_name}"
+        puts "#{$configuration_product_name}"
+        puts "#{$configuration_build_configuration}"
+        puts "#{$configuration_export}"
+      end
+
+    else
+      current_lane_name=lane_context[SharedValues::LANE_NAME]
+      raise Exception.new("\"*#{current_lane_name} lane*\": Configuration named: \"*#{key}*\" does not exist.")
+    end
+
+  end
+
+end
+
+#
+# This will split the raw_string into an array and sets the global constant: $configuration_batch_keys
+#
+# Parameter: <raw_string> - comma seperated string of configuration keys
+#
+def create_configuration_batch_keys_from_raw_string (raw_string)
+
+  $configuration_batch_keys = raw_string.split(",").map(&:strip)
+
+  $configuration_batch_keys.each do | configuration_batch_key |
+
+    if configuration_batch_key.to_s.strip.length == 0 then
+        current_lane_name=lane_context[SharedValues::LANE_NAME]
+        raise Exception.new("\"*#{current_lane_name} lane*\": \"*batch:*\" contains a blank configuration. Enter only valid configurations in order to batch deploy")
+    end
+  end
+end
+
+#
+# This will determine if we should install pods, then installs pods
+#
+def install_pods ()
+
+  if File.file?('../Podfile') && !File.directory?('../Pods') then
+    cocoapods
+  end
+
+end
+
+#
+# This will determine if we should install Carthage frameworks, then install.
+#
+def install_carthage ()
+  if File.file?('../Cartfile') then
+    if !(File.directory?('../Carthage')) then
+      sh("rm -rf ../Carthage")
+    end
+    Dir.chdir("../") do
+      sh("carthage_cache install")
+    end
+  end
+end
+
+
+#
+# This will determine if we should install/update submodules, then installs pods
+#
+def init_update_git_submodules ()
+
+  if File.file?('../.gitmodules') then
+    Dir.chdir("../") do
+      puts("Initializing and Updating Submodules")
+      sh("git submodule update --init --recursive")
+    end
+  end
+
+end
+
+def getTeamId()
+    teams = getTeams()
+    teams.each do |team|
+      if (!team["enterpriseTeam"] and !team["teamId"] .eql? "EUR8GE96BE" and !team["teamId"] .eql? "VQK4K6Q9UY") then
+        return team["teamId"]
+      end
+    end
+    raise Exception.new("No valid team found for appstore or testflight")
+end
+
+def getItcTeamId()
+    teams = getTeams()
+    teams.each do |team|
+      if (!team["enterpriseTeam"] and !team["teamId"] .eql? "EUR8GE96BE" and !team["teamId"] .eql? "VQK4K6Q9UY") then
+        return team["itcTeamId"]
+      end
+    end
+    itcTeamId = CredentialsManager::AppfileConfig.try_fetch_value(:itc_team_id)
+    return itcTeamId
+end
+
+def getTeams()
+  teams = nil;
+  if($configFileJSON.key?('teams')) then
+    teams = $configFileJSON["teams"]
+  else
+    bundles = $configFileJSON["bundles"]
+    teamId = CredentialsManager::AppfileConfig.try_fetch_value(:team_id)
+    teamName = CredentialsManager::AppfileConfig.try_fetch_value(:team_name)
+    itcTeamId = CredentialsManager::AppfileConfig.try_fetch_value(:itc_team_id)
+    enterpriseTeam = $configFileJSON["enterpriseTeam"]
+    enableServices = $configFileJSON["enableServices"]
+    teamJSON = [{"teamId" => teamId, "itcTeamId" => itcTeamId, "name" => teamName, "enterpriseTeam" => enterpriseTeam, "bundles" => bundles, "enableServices" => enableServices}]
+    teams = teamJSON
+  end
+  return teams
+end
+
+def updateDeviceList(updateCerts)
+  if File.file?('../devices.txt') then
+    register_devices(
+      devices_file: "../devices.txt",
+      team_id: getTeamId())
+    if (updateCerts) then
+      provision(false)
+    end
+  else 
+    aise Exception.new("No devices.txt file found to upload")
+  end
+end
+
+def createApp()
+  teams = getTeams()
+  teams.each do |team|
+    teamId = team["teamId"]
+    bundles = team["bundles"]
+    enableServices = team["enableServices"]
+    bundles.each do |bundle_identifier|
+      if (enableServices != nil) then
+        produce(app_identifier: bundle_identifier,
+        skip_itc: true,
+        team_id: teamId,
+        enable_services: {
+          app_group: enableServices.has_key("app_group") ? "on" : "off",
+          apple_pay: enableServices.has_key("apple_pay") ? "on" : "off",
+          data_protection: "complete",
+          associated_domains: enableServices.has_key("associated_domains") ? "on" : "off",
+          game_center: enableServices.has_key("game_center") ? "on" : "off",
+          health_kit: enableServices.has_key("health_kit") ? "on" : "off",
+          home_kit: enableServices.has_key("home_kit") ? "on" : "off",
+          hotspot: enableServices.has_key("hotspot") ? "on" : "off",
+          icloud: "cloudkit",
+          in_app_purchase: enableServices.has_key("in_app_purchase") ? "on" : "off",
+          inter_app_audio: enableServices.has_key("inter_app_audio") ? "on" : "off",
+          passbook: enableServices.has_key("passbook") ? "on" : "off",
+          multipath: enableServices.has_key("multipath") ? "on" : "off",
+          network_extensions: enableServices.has_key("network_extensions") ? "on" : "off",
+          nfc_tag_reading: enableServices.has_key("nfc_tag_reading") ? "on" : "off",
+          personal_vpn: enableServices.has_key("personal_vpn") ? "on" : "off",
+          push_notification: enableServices.has_key("push_notification") ? "on" : "off",
+          siri_kit: enableServices.has_key("siri_kit") ? "on" : "off",
+          wallet: enableServices.has_key("wallet") ? "on" : "off",
+          wireless_accessory: enableServices.has_key("wireless_accessory") ? "on" : "off"
+        })
+      else
+        produce(app_identifier: bundle_identifier,
+        skip_itc: true,
+        team_id: teamId)
+      end
+    end
+  end
+end
+
+def nukeCerts(inType, teamId)
+  type = ""
+  matchRepo = "git@github.com:fuzz-productions/certificates-ios.git"
+  tempRepo = $configFileJSON["matchRepo"]
+  if (tempRepo != nil && tempRepo.strip.length != 0) then
+    matchRepo = tempRepo
+  end
+  if (tempRepo != nil && tempRepo.strip.length != 0) then
+    type = inType
+  end
+  if (!teamId .eql? "EUR8GE96BE" and !teamId .eql? "VQK4K6Q9UY") then
+    cli = "match nuke #{type} --git_url #{matchRepo} --git_branch ${teamId} --team_id ${teamId}"
+    sh(cli)
+  end
+end
+
+def setupPush()
+  teams = getTeams()
+  teams.each do |team|
+    teamId = team["teamId"]
+    bundles = team["bundles"]
+    bundles.each do |bundle_identifier|
+      pem(development: true,
+        app_identifier: bundle_identifier,
+        output_path: "../pushCerts",
+        team_id: teamId)
+      pem(development: false,
+        app_identifier: bundle_identifier,
+        output_path: "../pushCerts",
+        team_id: teamId)
+    end
+  end
+  sh "git add ../pushCerts/*"
+end
+
+def provision(readOnly)
+    teams = getTeams()
+    matchRepo = "git@github.com:fuzz-productions/certificates-ios.git"
+    tempRepo = $configFileJSON["matchRepo"]
+
+    if (tempRepo != nil && tempRepo.strip.length != 0) then
+      matchRepo = tempRepo
+    end
+
+    teams.each do |team|
+      teamId = team["teamId"]
+      bundles = team["bundles"]
+      bundles.each do |bundle_identifier|
+        matchWrap(teamId, "development", bundle_identifier, readOnly, matchRepo)
+        if (team["enterpriseTeam"]) then
+          ENV["MATCH_FORCE_ENTERPRISE"] = "1"
+          matchWrap(teamId, "enterprise", bundle_identifier, readOnly, matchRepo)
+        else
+          matchWrap(teamId, "ad-hoc", bundle_identifier, readOnly, matchRepo)
+          matchWrap(teamId, "appstore", bundle_identifier, readOnly, matchRepo)
+      end
+      end
+    end
+
+    enterprise()
+  end
+
+  def enterprise()
+  #FUZZ ENTERPRISE
+    begin
+      ENV["MATCH_FORCE_ENTERPRISE"] = "1"
+      matchWrap("VQK4K6Q9UY", "enterprise", "*", true, "git@github.com:fuzz-productions/certificates-ios.git")
+    rescue Exception => e
+    end
+  end
+
+  def matchWrap(teamID, type, identifer, readOnly, matchRepo)
+    isJenkins = ENV['JENKINS']
+    if (isJenkins != nil and isJenkins.strip.length != 0) then
+      match(git_url: matchRepo,
+          type: type,
+          git_branch: teamID,
+          team_id: teamID,
+          keychain_password: ENV['KEYCHAIN_PASSWORD'],
+          app_identifier: identifer,
+          clone_branch_directly: true,
+          force: !readOnly,
+          readonly: readOnly)
+    else 
+      match(git_url: matchRepo,
+          type: type,
+          git_branch: teamID,
+          team_id: teamID,
+          app_identifier: identifer,
+          clone_branch_directly: true,
+          force: !readOnly,
+          readonly: readOnly)
+    end
+  end
+
+#########################################
+#########################################
+#########################################

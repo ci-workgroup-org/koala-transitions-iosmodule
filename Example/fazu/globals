@@ -1,0 +1,31 @@
+#########################################
+############ GLOBAL CONSTANTS ###########
+#########################################
+
+# global configuration variables
+$bundles=""
+$configFileJSON=""
+$configuration=""
+$configuration_name=""
+$configuration_scheme_name=""
+$configuration_product_name=""
+$configuration_build_configuration=""
+$configuration_batch_keys=""
+$configuration_xcargs=""
+$configuration_export=""
+$device=""
+$resign=false
+
+# internal (main) lane names
+$internal_validate_configuration_lane_name="ios validate"
+$internal_deploy_jenkins_lane_name= "ios deploy_jenkins"
+$internal_deploy_testflight_lane_name="ios deploy_testflight"
+$internal_deploy_appstore_lane_name="ios deploy_appstore"
+$internal_deploy_enterprise_lane_name="ios deploy_enterprise"
+
+# File Paths
+$FAZU_CONFIG_JSON = "fazu_build_configurations.json"
+
+#########################################
+#########################################
+#########################################

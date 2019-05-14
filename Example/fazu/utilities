@@ -1,0 +1,187 @@
+# requirements
+require 'fileutils'
+require 'xcodeproj'
+
+def buildClean()
+  sh "cd .. && rm -rf build || pwd"
+  sh "cd .. && mkdir build || pwd"
+  sh "cd .. && mkdir build/archive || pwd"
+  sh "cd .. && mkdir build/reports || pwd"
+  sh "cd .. && rm -rf Carthage || pwd"
+end
+
+def updateFazu()
+  sh "git clone git@github.com:fuzz-productions/fazu-ci.git"
+  sh "rm ../fazu/*"
+  sh "mv fazu-ci/fazu/* ../fazu/"
+  if File.file?('./fastfile') then
+    sh "rm ./fastfile"
+    sh "mv fazu-ci/fastlane/Fastfile ./fastfile"
+  else
+    sh "rm ./Fastfile"
+    sh "mv fazu-ci/fastlane/Fastfile ./Fastfile"
+  end
+  sh "rm -rf fazu-ci"
+end
+
+def getWorkspace()
+  workspace_filename = ""
+  Dir.chdir("../") do
+    workspace_filename=sh("find . -maxdepth 1 -name \"*.xcworkspace\" -print -quit")
+    workspace_filename.slice! "./"
+    workspace_filename.slice! "\n"
+  end
+  return workspace_filename
+end
+
+def getProject()
+  project_filename = ""
+  Dir.chdir("../") do
+    project_filename=sh("find . -maxdepth 1 -name \"*.xcodeproj\" -print -quit")
+    project_filename.slice! "./"
+    project_filename.slice! "\n"
+  end
+  return project_filename
+end
+
+#
+# This will commit and push the build increment to the repo
+#
+def build_number_increment()
+  ensure_git_status_clean
+  increment_build_number
+  increment_version_number(bump_type: "patch")
+  commit_version_bump(message: "[Fazu] Incremented build number")
+  push_to_git_remote(remote: "origin", force: false)
+end
+
+#
+# This returns true if the current lane being executed is the validation lane, false if any other lane
+#
+def is_validation_lane (lane_name)
+
+  result = false
+
+  if (lane_name == "ios validate")
+    result = true
+  end
+
+  return result
+
+end
+
+#
+# This returns true if the current lane being executed is a main lane, false if sub lane
+#
+def is_main_lane (lane_name)
+
+  is_main_lane = true
+  if (lane_name == "ios setup_certs" || lane_name == "ios install_certs") then
+    is_main_lane = false
+  elsif (lane_name == "ios nuke_certs") then
+    is_main_lane = false
+  elsif (lane_name == "ios clean") then
+    is_main_lane = false
+  elsif (lane_name == "ios pull_secrets") then
+    is_main_lane = false
+  elsif (lane_name == "ios push_secrets") then
+    is_main_lane = false
+  elsif (lane_name == "ios install_dependencies") then
+    is_main_lane = false
+  elsif (lane_name == "ios update_device_list") then
+    is_main_lane = false
+  elsif (lane_name == "ios setup_push" || lane_name == "ios create_app") then
+    is_main_lane = false
+  elsif (lane_name == "ios run_reports") then
+    is_main_lane = false
+  elsif (lane_name == "ios update_fazu") then
+    is_main_lane = false
+  elsif (lane_name == "ios pre_integration_install") then
+    is_main_lane = false
+  elsif (lane_name == "ios increment_build")
+    is_main_lane = false
+  end
+
+  return is_main_lane
+
+end
+
+#
+# This will copy artifacts over for Jenkins
+#
+def copy_build_artifacts(product_name, configuration_name)
+    # if ipa exists file ...  copy it!
+  if File.file?("../#{product_name}.ipa") then
+    FileUtils.cp("../#{product_name}.ipa","../build/archive/#{product_name}_#{configuration_name}.ipa")
+  end
+
+    # if dSYM zip file exists ...  copy it!
+  if File.file?("../#{product_name}.app.dSYM.zip") then
+    FileUtils.cp("../#{product_name}.app.dSYM.zip","../build/archive/#{product_name}_#{configuration_name}.app.dSYM.zip")
+  end
+
+end
+
+#
+# This will delete the build artifacts gathered during deploy
+#
+def delete_build_artifacts(product_name)
+  # if ipa exists file ...  delete it!
+  if File.file?("../#{product_name}.ipa") then
+    File.delete("../#{product_name}.ipa")
+  end
+
+  # if dSYM zip file exists ...  delete it!
+  if File.file?("../#{product_name}.app.dSYM.zip") then
+    File.delete("../#{product_name}.app.dSYM.zip")
+  end
+end
+
+def delete_build_artifacts(product_name)
+
+  # if ipa exists file ...  delete it!
+  if File.file?("../#{product_name}.ipa") then
+    File.delete("../#{product_name}.ipa")
+  end
+
+  # if dSYM zip file exists ...  delete it!
+  if File.file?("../#{product_name}.app.dSYM.zip") then
+    File.delete("../#{product_name}.app.dSYM.zip")
+  end
+end
+
+def resign(product_name, prov_file)
+  sh("fastlane sigh resign '../#{product_name}.ipa' --signing_identity 'iPhone Distribution: Fuzz Productions, LLC' -p ~/Library/MobileDevice/Provisioning\\ Profiles/#{prov_file}.mobileprovision")
+end
+
+def pull_secrets(secrets_id, location, filename)
+
+  if secrets_id.length < 20
+    print("---ERROR--- UUID in fazu_buld_configurations.json is not long enough please use a fresh 32-bit UUID \n\n")
+    sh("python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)'")
+    exit -1
+  end
+
+  result=sh("aws s3 sync --exclude \"*\" --include \"#{filename}\" s3://fuzz-ios-secrets/#{secrets_id}/ \"../#{location}\"")
+   if !File.file?("../#{location}/#{filename}")
+    print("---ERROR--- no file found, expected to find #{location}/#{filename}, please create this file and upload it\n\n")
+    exit -1
+  end
+end
+
+
+def push_secrets(secrets_id, location, filename)
+
+  if secrets_id.length < 20
+    print("---ERROR--- UUID in fazu_buld_configurations.json is not long enough please use a fresh 32-bit UUID \n\n")
+    sh("echo python -c 'import sys,uuid; sys.stdout.write(uuid.uuid4().hex)'")
+    exit -1
+  end
+
+  if !File.file?("../#{location}/#{filename}")
+    print("---ERROR--- no file found, expected to find #{location}/#{filename}, please create this file\n\n")
+    exit -1
+  end
+
+  sh("aws s3 sync --exclude \"*\" --include \"#{filename}\" \"../#{location}\" s3://fuzz-ios-secrets/#{secrets_id}/")
+end

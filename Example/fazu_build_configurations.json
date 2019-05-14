@@ -1,0 +1,14 @@
+{
+	"bundles": [
+		"*"
+	],
+	"enterpriseTeam": true,
+	"configurations": {
+		"Debug" : {
+    		"scheme_name": "KoalaTranistions-Example",
+    		"build_configuration": "Debug",
+    		"export_method" : "enterprise"
+		}
+	},
+	"xcodeVersion": "10.2"
+}

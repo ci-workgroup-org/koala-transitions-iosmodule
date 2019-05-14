@@ -1,0 +1,249 @@
+fastlane_version "1.98.0"
+
+default_platform :ios
+
+#########################################
+###### DO NOT EDIT BELOW THIS LINE ######
+#########################################
+
+# requirements
+require 'fileutils'
+require 'xcodeproj'
+
+# utilities
+import "../fazu/utilities"
+import "../fazu/testing"
+import "../fazu/setup"
+import "../fazu/globals"
+
+platform :ios do
+
+  #
+  # This block is called before a lane is executed
+  #
+  before_all do | lane, options |
+    current_lane_name=lane_context[SharedValues::LANE_NAME]
+    if File.file?("../"+$FAZU_CONFIG_JSON) then
+      $configFileJSON = JSON.parse(File.read("../"+$FAZU_CONFIG_JSON))
+    # else
+      # Dir.chdir("../") do
+      #   identifier=sh("xcodebuild clean -dry-run -showBuildSettings 2>/dev/null | grep -i 'PRODUCT_BUNDLE_IDENTIFIER'").strip.sub!("PRODUCT_BUNDLE_IDENTIFIER = ","")
+      #   $configFileJSON = JSON.parse("{\"bundles\": [\"#{identifier}\"], \"enterpriseTeam\": true}")
+      # end
+    end
+
+    if options.has_key?(:resign) then
+      $resign = true
+    end
+
+    if is_main_lane(current_lane_name) then
+      if ($configFileJSON["xcodeVersion"] and $configFileJSON["xcodeVersion"].to_s != '') then
+        xcversion(version: $configFileJSON["xcodeVersion"])
+      end
+      loadConfig(current_lane_name, options)
+      if (ENV['JENKINS'] != nil and ENV['JENKINS'].to_s != '') then
+        unlock_keychain(path: "~/Library/Keychains/login.keychain", password: ENV['KEYCHAIN_PASSWORD'])
+      end
+    end
+  end
+
+  #
+  # This block is called, only if the executed lane was successful
+  #
+  after_all do | lane, options |
+    current_lane_name=lane_context[SharedValues::LANE_NAME]
+    if is_main_lane(current_lane_name) then
+      copy_build_artifacts($configuration_scheme_name, $configuration_name)
+      delete_build_artifacts($configuration_scheme_name)
+    end
+  end
+
+  #
+  # This block is called, only if the executed lane has failed
+  #
+  error do |lane, exception|
+    current_lane_name=lane_context[SharedValues::LANE_NAME]
+    if is_main_lane(current_lane_name) then
+      delete_build_artifacts($configuration_scheme_name)
+    end
+  end
+
+  lane :build do | options |
+    if options.has_key?(:batch) and options[:batch] .eql?  "all" then
+      configs = $configFileJSON["configurations"]
+      configs.keys.each do | key |
+        load_configuration_with_key(key)
+        before_deploy(false)
+        private_build
+      end
+    elsif options.has_key?(:batch) then
+      configuration_batch_last_index = $configuration_batch_keys.length - 1
+      $configuration_batch_keys.each_with_index do | configuration_batch_key, index|
+        load_configuration_with_key(configuration_batch_key)
+        before_deploy(false)
+        private_build
+      end
+    else
+      private_build
+    end
+  end
+
+  lane :deploy_testflight do | options |
+    executeGym()
+    pilot(team_id: getItcTeamId())
+    build_number_increment()
+  end
+
+  lane :deploy_appstore do | options |
+    executeGym()
+    deliver(team_id: getItcTeamId())
+    build_number_increment()
+  end
+
+  #
+  # This will validate the given configuration
+  #
+  # key:<configuration_name>
+  #
+  lane :validate do
+    gym(silent: true, scheme: $configuration_scheme_name, configuration: $configuration_build_configuration)
+  end
+
+  #
+  # This will perform unit and ui tests
+  #
+  lane :perform_tests do | options |
+      perform_tests_func($configuration_scheme_name, $configuration_build_configuration, $configuration_product_name)
+  end
+
+  #
+  # Local Build
+  #
+  private_lane :private_build do | options |
+    executeGym()
+    if $resign then
+      copy_build_artifacts($configuration_scheme_name, $configuration_name)
+      enterprise()
+      resign($configuration_scheme_name, ENV['sigh_*_enterprise'])
+      copy_build_artifacts($configuration_scheme_name, $configuration_name + "_Enterprise")
+      delete_build_artifacts($configuration_scheme_name)
+    end
+  end
+
+  def executeGym()
+    if $configuration_xcargs.to_s == '' then
+      gym(scheme: $configuration_scheme_name,
+        derived_data_path: "build",
+        configuration: $configuration_build_configuration,
+        export_method: $configuration_export,
+        output_name: $configuration_scheme_name)
+    else
+      gym(scheme: $configuration_scheme_name,
+        derived_data_path: "build",
+        configuration: $configuration_build_configuration,
+        output_name: $configuration_scheme_name,
+        export_method: $configuration_export,
+        xcargs: $configuration_xcargs)
+    end
+  end
+
+  lane :setup_certs do | options |
+    provision(false)
+  end
+
+  lane :create_app do | options |
+    createApp()
+  end
+
+  lane :setup_push do | options |
+    setupPush()
+  end
+
+  lane :nuke_certs do | options |
+    type = options[:type]
+    if options.has_key?(:all) then
+      teams = getTeams()
+      teams.each do |team|
+        teamId = team["teamId"]
+        nukeCerts(type, teamId)
+      end
+    elsif options.has_key?(:teamId) then
+      teamId = options[:teamId]
+      nukeCerts(type, teamId)
+    else
+      raise Exception.new("\"*#{current_lane_name} lane*\": Nuke requires a teamId or all flag")
+    end
+  end
+
+  lane :update_device_list do | options |
+    updateDeviceList(options.has_key?(:update_certs))
+  end
+
+  lane :install_certs do | options |
+    provision(true)
+  end
+
+  lane :clean do | options |
+    if options.has_key?(:reset) then
+      reset_git_repo(force: true, disregard_gitignore: false)
+    end
+    buildClean()
+    before_deploy()
+  end
+
+  lane :install_dependencies do | options |
+    updateDependencies()
+  end
+
+  lane :run_reports do | options |
+    reports()
+  end
+
+  lane :update_fazu do | options |
+    updateFazu()
+  end
+
+  lane :inject_enterprise do | options |
+    enterprise()
+    prov_file = ENV['sigh_*_enterprise']
+    filePath = File.expand_path("~/Library/MobileDevice/Provisioning\ Profiles/#{prov_file}.mobileprovision")
+    update_project_provisioning(build_configuration: $configuration_build_configuration, profile: filePath, code_signing_identity: "iPhone Distribution: Fuzz Productions, LLC")
+
+    disable_automatic_code_signing(
+      path: getProject(),
+      team_id: "VQK4K6Q9UY"
+    )
+
+    teams = getTeams()
+    team = teams[0]
+    bundles = team["bundles"]
+    bundle = bundles[0]
+
+    plistPath = ""
+    Dir.chdir("../") do
+      xcodeCommand = "xcodebuild clean -dry-run -scheme '#{$configuration_scheme_name}' -configuration '#{$configuration_build_configuration}' -showBuildSettings 2>/dev/null"
+      plistPath=sh("#{xcodeCommand} | grep 'INFOPLIST_FILE'").strip.sub!("INFOPLIST_FILE = ","")
+      begin
+        entitlements=sh("#{xcodeCommand} | grep 'CODE_SIGN_ENTITLEMENTS'").strip.sub!("CODE_SIGN_ENTITLEMENTS = ","")
+        if File.file?("../${entitlements}") then
+          File.delete("../${entitlements}")
+        end
+      rescue Exception => e
+      end
+    end
+    update_app_identifier(
+      xcodeproj: getProject(), # Optional path to xcodeproj, will use the first .xcodeproj if not set
+      plist_path: plistPath, # Path to info plist file, relative to xcodeproj
+      app_identifier: bundle
+    )
+  end
+
+  lane :pull_secrets do | options |
+      pull_secrets($configFileJSON["secrets"]["uuid"], $configFileJSON["secrets"]["location"], $configFileJSON["secrets"]["filename"])
+  end
+
+  lane :push_secrets do | options |
+      push_secrets($configFileJSON["secrets"]["uuid"], $configFileJSON["secrets"]["location"], $configFileJSON["secrets"]["filename"])
+  end
+
+end
