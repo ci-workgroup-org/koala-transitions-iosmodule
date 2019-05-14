@@ -47,14 +47,16 @@ public class PushNavigationAnimator: NSObject, Animator {
                 toViewController.view.transform = CGAffineTransform(translationX: toViewController.view.bounds.size.width, y: 0)
             }
 
-            UIView.animate(withDuration: transitionDuration(using: context),
-                           animations: {
-                               toViewController.view.transform = CGAffineTransform(translationX: 0, y: 0)
-                           },
-                           completion: { _ in
-                               toViewController.view.transform = CGAffineTransform(translationX: 0, y: 0)
-                               context.completeTransition(!context.transitionWasCancelled)
-            })
+            UIView.animate(
+                withDuration: transitionDuration(using: context),
+                animations: {
+                    toViewController.view.transform = CGAffineTransform(translationX: 0, y: 0)
+                },
+                completion: { _ in
+                    toViewController.view.transform = CGAffineTransform(translationX: 0, y: 0)
+                    context.completeTransition(!context.transitionWasCancelled)
+                }
+            )
         case .backward:
             context.containerView.insertSubview(toViewController.view, belowSubview: fromViewController.view)
             var transform: CGAffineTransform
@@ -69,15 +71,17 @@ public class PushNavigationAnimator: NSObject, Animator {
                 transform = CGAffineTransform(translationX: toViewController.view.bounds.size.width, y: 0)
             }
 
-            UIView.animate(withDuration: transitionDuration(using: context),
-                           animations: {
-                               fromViewController.view.transform = transform
-                           },
-                           completion: { _ in
-                               fromViewController.view.transform = transform
-                               fromViewController.view.removeFromSuperview()
-                               context.completeTransition(!context.transitionWasCancelled)
-            })
+            UIView.animate(
+                withDuration: transitionDuration(using: context),
+                animations: {
+                    fromViewController.view.transform = transform
+                },
+                completion: { _ in
+                    fromViewController.view.transform = transform
+                    fromViewController.view.removeFromSuperview()
+                    context.completeTransition(!context.transitionWasCancelled)
+                }
+            )
         }
     }
 }

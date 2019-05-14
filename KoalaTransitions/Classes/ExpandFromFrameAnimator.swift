@@ -7,11 +7,10 @@
 
 import UIKit
 
-
 public class ExpandFromFrameAnimator: NSObject, Animator {
     public let duration: Double
     public let originFrame: CGRect
-    
+
     public var playDirection: AnimationDirection
 
     public init(_ originFrame: CGRect = CGRect.zero, duration: Double = 0.40, direction: AnimationDirection = .forward) {
@@ -62,19 +61,21 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
             containerView.addSubview(fromView)
         }
 
-        UIView.animate(withDuration: duration,
-                       animations: {
-                           switch self.playDirection {
-                           case .forward:
-                               toView.transform = CGAffineTransform.identity
-                               toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-                           case .backward:
-                               fromView.transform = scaleTransform
-                               fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-                           }
-                       },
-                       completion: { _ in
-                           transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-        })
+        UIView.animate(
+            withDuration: duration,
+            animations: {
+                switch self.playDirection {
+                case .forward:
+                    toView.transform = CGAffineTransform.identity
+                    toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                case .backward:
+                    fromView.transform = scaleTransform
+                    fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                }
+            },
+            completion: { _ in
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            }
+        )
     }
 }
