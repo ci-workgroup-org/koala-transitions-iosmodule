@@ -71,7 +71,7 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
                            }
                        },
                        completion: { _ in
-                           transitionContext.completeTransition(true)
+                           transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         })
     }
 }
