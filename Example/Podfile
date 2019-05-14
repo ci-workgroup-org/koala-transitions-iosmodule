@@ -1,0 +1,15 @@
+platform :ios, '12.0'
+use_frameworks!
+
+
+target 'KoalaTransitions_Example' do
+  pod 'KoalaTransitions', :path => '../'
+  pod 'SnapKit'
+  pod 'SwiftyButton'
+
+  target 'KoalaTransitions_Tests' do
+    inherit! :search_paths
+    pod 'Quick'
+    pod 'Nimble'
+  end
+end

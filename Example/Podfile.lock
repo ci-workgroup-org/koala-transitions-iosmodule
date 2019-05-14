@@ -1,0 +1,35 @@
+PODS:
+  - KoalaTransitions (0.1.0)
+  - Nimble (8.0.1)
+  - Quick (2.1.0)
+  - SnapKit (5.0.0)
+  - SwiftyButton (0.8.2)
+
+DEPENDENCIES:
+  - KoalaTransitions (from `../`)
+  - Nimble
+  - Quick
+  - SnapKit
+  - SwiftyButton
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Nimble
+    - Quick
+    - SnapKit
+    - SwiftyButton
+
+EXTERNAL SOURCES:
+  KoalaTransitions:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  KoalaTransitions: 36c56c79bb47387ee81c0c8a86b23cbbc8f9d3ca
+  Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
+  Quick: 4be43f6634acfa727dd106bdf3929ce125ffa79d
+  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
+  SwiftyButton: 5b0ef314e9cf61cf8a83e456ddd1ea1f53f30598
+
+PODFILE CHECKSUM: fe42ea7381f10fa8fa45b4ca0e58b33a88d69d83
+
+COCOAPODS: 1.6.1
