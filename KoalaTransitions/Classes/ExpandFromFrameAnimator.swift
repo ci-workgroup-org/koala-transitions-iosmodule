@@ -7,14 +7,17 @@
 
 import UIKit
 
-public class ExpandFromFrameAnimator: NSObject, Animator {
-    public let duration = 0.40
-    public var playDirection: AnimationDirection
-    public let originFrame: CGRect
 
-    public init(_ originFrame: CGRect = CGRect.zero, direction: AnimationDirection = .forward) {
+public class ExpandFromFrameAnimator: NSObject, Animator {
+    public let duration: Double
+    public let originFrame: CGRect
+    
+    public var playDirection: AnimationDirection
+
+    public init(_ originFrame: CGRect = CGRect.zero, duration: Double = 0.40, direction: AnimationDirection = .forward) {
         self.originFrame = originFrame
         playDirection = direction
+        self.duration = duration
     }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
