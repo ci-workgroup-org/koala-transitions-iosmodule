@@ -1,0 +1,23 @@
+reporter: "xcode"
+line_length: 
+  - 200
+  - 300
+file_length:
+  - 600
+  - 2000
+cyclomatic_complexity:
+  - 20
+type_body_length:
+  - 400
+variable_name:
+  min_length:
+    - 1
+  max_length:
+    - 60
+excluded:
+  - Pods
+  - ../Packages
+  - ../Scripts
+disabled_rules:
+  - trailing_newline
+

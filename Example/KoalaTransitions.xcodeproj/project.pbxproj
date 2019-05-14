@@ -48,6 +48,7 @@
 		9CB6976294BBD50122F68999 /* Pods_KoalaTransitions_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoalaTransitions_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6B995F05F44FE6C89C0B74 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		F78B23DDC09233B351357C91 /* KoalaTransitions.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = KoalaTransitions.podspec; path = ../KoalaTransitions.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F9237997228AF7E600446586 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		FB6B138AF04A9121DA0D4D1B /* Pods-KoalaTransitions_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoalaTransitions_Example.release.xcconfig"; path = "Target Support Files/Pods-KoalaTransitions_Example/Pods-KoalaTransitions_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,6 +75,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				F9237997228AF7E600446586 /* .swiftlint.yml */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for KoalaTransitions */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -172,6 +174,7 @@
 				1E46967A94B89DBF8D6B5B01 /* [CP] Check Pods Manifest.lock */,
 				29164A7B94C3273A84390431 /* [CP-User] swiftformat run */,
 				29437DD9D0DB606222D163BE /* [CP-User] swiftformat pod run */,
+				77D4E5EB300AC39ABA922305 /* [CP-User] siwftLint run */,
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
@@ -351,6 +354,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-KoalaTransitions_Tests/Pods-KoalaTransitions_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		77D4E5EB300AC39ABA922305 /* [CP-User] siwftLint run */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "[CP-User] siwftLint run";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = " ./Pods/SwiftLint/swiftlint";
 			showEnvVarsInLog = 0;
 		};
 		ABE7258A347761698117B26D /* [CP] Embed Pods Frameworks */ = {

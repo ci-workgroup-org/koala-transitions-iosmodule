@@ -17,7 +17,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"
-        // Do any additional setup after loading the view, typically from a nib.
 
         view.addSubview(button)
         button.snp.makeConstraints { make in
@@ -38,8 +37,9 @@ class ViewController: UIViewController {
     @objc func pressed() {
         let transitioner = Transitioner(animator: PushNavigationAnimator(direction: .fromRightToLeft))
         let nextVC = DetailsViewController()
+        let navC = UINavigationController(rootViewController: nextVC)
         nextVC.transitioner = transitioner
-        nextVC.transitioningDelegate = transitioner
-        present(nextVC, animated: true)
+        navC.transitioningDelegate = transitioner
+        present(navC, animated: true)
     }
 }

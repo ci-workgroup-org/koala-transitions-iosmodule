@@ -1,9 +1,10 @@
 PODS:
-  - KoalaTransitions (0.1.0)
+  - KoalaTransitions (0.0.1)
   - Nimble (8.0.1)
   - Quick (2.1.0)
   - SnapKit (5.0.0)
   - SwiftFormat/CLI (0.40.8)
+  - SwiftLint (0.32.0)
   - SwiftyButton (0.8.2)
 
 DEPENDENCIES:
@@ -12,6 +13,7 @@ DEPENDENCIES:
   - Quick
   - SnapKit
   - SwiftFormat/CLI
+  - SwiftLint
   - SwiftyButton
 
 SPEC REPOS:
@@ -20,6 +22,7 @@ SPEC REPOS:
     - Quick
     - SnapKit
     - SwiftFormat
+    - SwiftLint
     - SwiftyButton
 
 EXTERNAL SOURCES:
@@ -27,13 +30,14 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  KoalaTransitions: 86d9d7c9ef98b22e85c95d2e88f5062594e73797
+  KoalaTransitions: 269adf7400acb0908f023993317ae2923cdd8890
   Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
   Quick: 4be43f6634acfa727dd106bdf3929ce125ffa79d
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   SwiftFormat: d9e5ca1aed735164fe9d26510ec508ddb8a93598
+  SwiftLint: 009a898ef2a1c851f45e1b59349bf6ff2ddc990d
   SwiftyButton: 5b0ef314e9cf61cf8a83e456ddd1ea1f53f30598
 
-PODFILE CHECKSUM: 40473e58970eea5aac23d9d055272df6db321b0a
+PODFILE CHECKSUM: 88ddef68c5e088730948e46bb07e43a8f4d5ac55
 
 COCOAPODS: 1.6.1
