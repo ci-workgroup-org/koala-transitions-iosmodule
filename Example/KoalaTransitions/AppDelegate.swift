@@ -6,6 +6,7 @@
 //  Copyright (c) 2019 nick@fuzzproductions.com. All rights reserved.
 //
 
+import KoalaTransitions
 import UIKit
 
 @UIApplicationMain
@@ -20,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = tabController
         window?.makeKeyAndVisible()
 
-        tabController.setViewControllers([ListViewController(), ViewController()], animated: true)
+        tabController.setViewControllers([ListViewController(), ViewController(), AnimatedNavigationController(rootViewController: FirstViewController())], animated: true)
 
         return true
     }

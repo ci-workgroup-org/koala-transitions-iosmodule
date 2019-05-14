@@ -57,10 +57,11 @@ class ListViewController: UIViewController {
     }
 
     @objc func pressed(_ button: UIControl) {
-        transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview))
         let nextVC = DetailsViewController()
-        nextVC.transitioner = transitioner
-        nextVC.transitioningDelegate = transitioner
+        nextVC.transitioner = InOutTransitioner(inAnimator: ExpandFromFrameAnimator(button.frameInSuperview), outAnimator: SlideAnimator(direction: .fromBottomToTop))
+
+        // nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview))
+        nextVC.setTransitioningDelegateToTransitioner()
         present(nextVC, animated: true)
     }
 }

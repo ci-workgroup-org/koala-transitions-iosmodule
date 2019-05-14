@@ -16,6 +16,7 @@
 		696A7E96228A5E1600DD18B7 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A7E95228A5E1600DD18B7 /* ListViewController.swift */; };
 		696A7E98228A5F1500DD18B7 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */; };
 		6FE53D86E021AA988E623FC3 /* Pods_KoalaTransitions_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 178DA9B8BE42CD97EB77EF16 /* Pods_KoalaTransitions_Example.framework */; };
+		F923799B228B2ED200446586 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923799A228B2ED200446586 /* FirstViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		CF6B995F05F44FE6C89C0B74 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		F78B23DDC09233B351357C91 /* KoalaTransitions.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = KoalaTransitions.podspec; path = ../KoalaTransitions.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F9237997228AF7E600446586 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
+		F923799A228B2ED200446586 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		FB6B138AF04A9121DA0D4D1B /* Pods-KoalaTransitions_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoalaTransitions_Example.release.xcconfig"; path = "Target Support Files/Pods-KoalaTransitions_Example/Pods-KoalaTransitions_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,6 +103,7 @@
 				696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */,
 				696A7E95228A5E1600DD18B7 /* ListViewController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				F923799A228B2ED200446586 /* FirstViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
@@ -432,6 +435,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F923799B228B2ED200446586 /* FirstViewController.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				696A7E96228A5E1600DD18B7 /* ListViewController.swift in Sources */,

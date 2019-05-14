@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  FirstViewController.swift
 //  KoalaTransitions
 //
 //  Created by nick@fuzzproductions.com on 05/13/2019.
@@ -11,12 +11,14 @@ import SnapKit
 import SwiftyButton
 import UIKit
 
-class ViewController: UIViewController {
+class FirstViewController: UIViewController, CustomTransitions {
+    var transitioner: Transitioner?
     let button = PressableButton()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "List"
+        title = "navigation"
+        view.backgroundColor = [.lightText, .orange, .blue].randomElement()
 
         view.addSubview(button)
         button.snp.makeConstraints { make in
@@ -29,17 +31,12 @@ class ViewController: UIViewController {
         button.addTarget(self, action: #selector(pressed), for: .touchUpInside)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @objc func pressed() {
-        let transitioner = Transitioner(animator: SlideAnimator(direction: .fromRightToLeft))
-        let nextVC = DetailsViewController()
-        let navC = UINavigationController(rootViewController: nextVC)
+        let transitioner = Transitioner(animator: SlideAnimator(direction: .fromBottomToTop))
+        let nextVC = FirstViewController()
         nextVC.transitioner = transitioner
-        navC.transitioningDelegate = transitioner
-        present(navC, animated: true)
+        nextVC.setTransitioningDelegateToTransitioner()
+        transitioningDelegate = transitioner
+        navigationController?.pushViewController(nextVC, animated: true)
     }
 }

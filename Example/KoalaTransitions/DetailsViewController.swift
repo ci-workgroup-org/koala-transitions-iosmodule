@@ -10,7 +10,7 @@ import Foundation
 import KoalaTransitions
 import UIKit
 
-class DetailsViewController: UIViewController {
+class DetailsViewController: UIViewController, CustomTransitions {
     var transitioner: Transitioner?
 
     let topView = UIView()
@@ -46,9 +46,13 @@ class DetailsViewController: UIViewController {
     }
 
     @objc func actionClose(_: UITapGestureRecognizer) {
-        // presentingViewController?.transitioningDelegate = transitioner
-        transitioner?.playDirection = .backward
-        transitioningDelegate = transitioner
-        presentingViewController?.dismiss(animated: true)
+        dismissWithTransition()
+    }
+
+    func animate(
+        alongsideTransition _: ((UIViewControllerTransitionCoordinatorContext) -> Void)?,
+        completion _: ((UIViewControllerTransitionCoordinatorContext) -> Void)? = nil
+    ) -> Bool {
+        return true
     }
 }

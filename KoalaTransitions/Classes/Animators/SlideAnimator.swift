@@ -1,5 +1,5 @@
 //
-//  PTNPushNavigationAnimator.swift
+//  SlideAnimator.swift
 //  ThePattern
 //
 //  Created by nicholas Trienens on 2/10/16.
@@ -9,18 +9,21 @@
 import Foundation
 import UIKit
 
-public enum TargetPanDirection {
+/// SlideDirection represents the directionality of the SlideAnimator transition
+public enum SlideDirection {
     case fromLeftToRight
     case fromTopToBottom
     case fromRightToLeft
     case fromBottomToTop
 }
 
-public class PushNavigationAnimator: NSObject, Animator {
-    var direction: TargetPanDirection
+/// SlideAnimator does a mock push but from any of the 4 sides
+public class SlideAnimator: NSObject, Animator {
+    var direction: SlideDirection
     public var playDirection: AnimationDirection = .forward
+    public var supportedPresentations = PresentaionType.all
 
-    public init(direction: TargetPanDirection = .fromRightToLeft) {
+    public init(direction: SlideDirection = .fromRightToLeft) {
         self.direction = direction
     }
 
@@ -29,6 +32,7 @@ public class PushNavigationAnimator: NSObject, Animator {
     }
 
     public func animateTransition(using context: UIViewControllerContextTransitioning) {
+        print(context)
         guard let toViewController = context.viewController(forKey: UITransitionContextViewControllerKey.to),
             let fromViewController = context.viewController(forKey: UITransitionContextViewControllerKey.from) else { return }
 
