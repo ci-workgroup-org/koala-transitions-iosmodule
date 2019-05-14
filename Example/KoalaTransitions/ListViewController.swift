@@ -20,7 +20,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"
-        view.backgroundColor = .orange
+        view.backgroundColor = .lightGray
 
         view.addSubview(button)
         button.snp.makeConstraints { make in
@@ -46,7 +46,7 @@ class ListViewController: UIViewController {
 
         view.addSubview(bottomLeftButton)
         bottomLeftButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(80)
+            make.bottom.equalToSuperview().inset(100)
             make.leading.equalToSuperview().inset(50)
             make.width.equalTo(140)
             make.height.equalTo(50)
@@ -56,13 +56,7 @@ class ListViewController: UIViewController {
         bottomLeftButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     @objc func pressed(_ button: UIControl) {
-        print("hi")
         transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview))
         let nextVC = DetailsViewController()
         nextVC.transitioner = transitioner
