@@ -36,12 +36,10 @@ class ViewController: UIViewController {
     }
 
     @objc func pressed() {
-        print("hi")
         let transitioner = Transitioner(animator: PushNavigationAnimator(direction: .fromRightToLeft))
         let nextVC = DetailsViewController()
+        nextVC.transitioner = transitioner
         nextVC.transitioningDelegate = transitioner
-        present(nextVC, animated: true, completion: {
-            print(transitioner)
-        })
+        present(nextVC, animated: true)
     }
 }

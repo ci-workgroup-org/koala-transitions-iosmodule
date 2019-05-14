@@ -1,4 +1,4 @@
-//  ZoomAnimator.swift
+//  ExpandFromFrameAnimator.swift
 //  KoalaTransitions
 //
 //  Created by nick@fuzzproductions.com on 05/13/2019.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-public class ZoomAnimator: NSObject, Animator {
-    public let duration = 3.0
+public class ExpandFromFrameAnimator: NSObject, Animator {
+    public let duration = 0.40
     public var playDirection: AnimationDirection
     public let originFrame: CGRect
 
@@ -44,6 +44,7 @@ public class ZoomAnimator: NSObject, Animator {
             toView.transform = scaleTransform
             toView.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
             toView.clipsToBounds = true
+            containerView.addSubview(toView)
 
         case .backward:
             initialFrame = fromView.frame
@@ -52,19 +53,13 @@ public class ZoomAnimator: NSObject, Animator {
             let xScaleFactor = finalFrame.width / initialFrame.width
 
             let yScaleFactor = finalFrame.height / initialFrame.height
-
             scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
 
-//            toView.transform = scaleTransform
-//            toView.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
-//            toView.clipsToBounds = true
+            containerView.addSubview(toView)
+            containerView.addSubview(fromView)
         }
-        containerView.addSubview(toView)
 
         UIView.animate(withDuration: duration,
-                       delay: 0.0,
-                       usingSpringWithDamping: 0.4,
-                       initialSpringVelocity: 0.0,
                        animations: {
                            switch self.playDirection {
                            case .forward:

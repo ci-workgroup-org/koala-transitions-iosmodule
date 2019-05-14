@@ -23,14 +23,8 @@ class DetailsViewController: UIViewController {
 
     @objc func actionClose(_: UITapGestureRecognizer) {
         // presentingViewController?.transitioningDelegate = transitioner
+        transitioner?.playDirection = .backward
         transitioningDelegate = transitioner
-        presentingViewController?.dismiss(animated: true, completion: {
-            print(self.transitioner)
-        })
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        presentingViewController?.dismiss(animated: true)
     }
 }

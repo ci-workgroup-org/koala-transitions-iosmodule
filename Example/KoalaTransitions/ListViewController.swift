@@ -14,22 +14,46 @@ import UIKit
 
 class ListViewController: UIViewController {
     let button = PressableButton()
+    let topButton = PressableButton()
+    let bottomLeftButton = PressableButton()
     var transitioner: Transitioner?
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "List"
-        // Do any additional setup after loading the view, typically from a nib.
         view.backgroundColor = .orange
 
         view.addSubview(button)
         button.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().inset(50)
             make.width.equalTo(140)
             make.height.equalTo(50)
         }
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.setTitle("launch", for: .normal)
         button.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+
+        view.addSubview(topButton)
+        topButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(50)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(140)
+            make.height.equalTo(50)
+        }
+        topButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        topButton.setTitle("launch", for: .normal)
+        topButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+
+        view.addSubview(bottomLeftButton)
+        bottomLeftButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(80)
+            make.leading.equalToSuperview().inset(50)
+            make.width.equalTo(140)
+            make.height.equalTo(50)
+        }
+        bottomLeftButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        bottomLeftButton.setTitle("launch", for: .normal)
+        bottomLeftButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,14 +61,12 @@ class ListViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    @objc func pressed() {
+    @objc func pressed(_ button: UIControl) {
         print("hi")
-        transitioner = Transitioner(animator: ZoomAnimator(button.frameInSuperView()))
+        transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview))
         let nextVC = DetailsViewController()
         nextVC.transitioner = transitioner
         nextVC.transitioningDelegate = transitioner
-        present(nextVC, animated: true, completion: {
-            print(self.transitioner)
-        })
+        present(nextVC, animated: true)
     }
 }

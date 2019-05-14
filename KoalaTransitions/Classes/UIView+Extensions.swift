@@ -1,11 +1,13 @@
 
 
+// MARK: - <#Description#>
+
 extension UIView {
-    public func frameInSuperView() -> CGRect {
+    /// returns the receiver's frame in it's superview coordinates, or it's frame
+    public var frameInSuperview: CGRect {
         if let superview = superview {
             return superview.convert(frame, to: nil)
         }
-        print("[ANIMATION WARNING] Seems like this view is not in views hierarchy\n\(self)\nOriginal frame returned")
         return frame
     }
 
