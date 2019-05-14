@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '11.0'
 
   s.source_files = 'KoalaTransitions/Classes/**/*'
-  s.swift_version = '4.2'
+  s.swift_version = '5.0'
 
   # s.dependency 'AFNetworking', '~> 2.3'
 end

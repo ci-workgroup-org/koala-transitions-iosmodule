@@ -6,7 +6,12 @@ target 'KoalaTransitions_Example' do
   pod 'KoalaTransitions', :path => '../'
   pod 'SnapKit'
   pod 'SwiftyButton'
+  pod 'SwiftFormat/CLI'
 
+  script_phase :name => 'swiftformat run', :script => ' ./Pods/SwiftFormat/CommandLineTool/swiftformat .', :execution_position => :before_compile
+
+  script_phase :name => 'swiftformat pod run', :script => ' ./Pods/SwiftFormat/CommandLineTool/swiftformat ../KoalaTransitions', :execution_position => :before_compile
+  
   target 'KoalaTransitions_Tests' do
     inherit! :search_paths
     pod 'Quick'
