@@ -227,7 +227,9 @@
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = VQK4K6Q9UY;
 						LastSwiftMigration = 1020;
+						ProvisioningStyle = Manual;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
 				};
@@ -329,7 +331,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = " ./Pods/SwiftFormat/CommandLineTool/swiftformat ../KoalaTransitions";
+			shellScript = " ./Pods/SwiftFormat/CommandLineTool/swiftformat ../KoalaTransitions\n";
 			showEnvVarsInLog = 0;
 		};
 		60C6E80D92076D2575F5203F /* [CP] Embed Pods Frameworks */ = {
@@ -577,7 +579,7 @@
 			baseConfigurationReference = 99DED77A1BFBB43F6A66F3FE /* Pods-KoalaTransitions_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Fuzz Productions, LLC";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = VQK4K6Q9UY;
 				INFOPLIST_FILE = KoalaTransitions/Info.plist;
@@ -596,7 +598,7 @@
 			baseConfigurationReference = FB6B138AF04A9121DA0D4D1B /* Pods-KoalaTransitions_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Fuzz Productions, LLC";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = VQK4K6Q9UY;
 				INFOPLIST_FILE = KoalaTransitions/Info.plist;
@@ -614,6 +616,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 1965E785E8FBE792A4E880BC /* Pods-KoalaTransitions_Tests.debug.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = VQK4K6Q9UY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -626,6 +630,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoalaTransitions_Example.app/KoalaTransitions_Example";
 			};
@@ -635,6 +640,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8CAA46A045BEEE8F07FFEF18 /* Pods-KoalaTransitions_Tests.release.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = VQK4K6Q9UY;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -643,6 +650,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/KoalaTransitions_Example.app/KoalaTransitions_Example";
 			};
