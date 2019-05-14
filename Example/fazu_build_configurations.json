@@ -10,5 +10,5 @@
     		"export_method" : "enterprise"
 		}
 	},
-	"xcodeVersion": "10.2"
+	"xcodeVersion": "~> 10.2"
 }

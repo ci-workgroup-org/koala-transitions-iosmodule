@@ -331,7 +331,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = " ./Pods/SwiftFormat/CommandLineTool/swiftformat ../KoalaTransitions\n";
+			shellScript = " ./Pods/SwiftFormat/CommandLineTool/swiftformat ../KoalaTransitions";
 			showEnvVarsInLog = 0;
 		};
 		60C6E80D92076D2575F5203F /* [CP] Embed Pods Frameworks */ = {

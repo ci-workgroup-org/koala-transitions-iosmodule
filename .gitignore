@@ -2,3 +2,5 @@
 /Example/Pods
 /Example/KoalaTransitions.xcworkspace/xcuserdata/nicholastrienens.xcuserdatad/UserInterfaceState.xcuserstate
 /Example/KoalaTransitions.xcworkspace/xcuserdata
+/Example/build
+/Example/fastlane/report.xml
