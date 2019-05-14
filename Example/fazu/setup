@@ -26,9 +26,9 @@ def loadConfig(current_lane_name, options)
 end
 
 def updateDependencies()
-  init_update_git_submodules()
-  install_pods()
-  install_carthage()
+  #init_update_git_submodules()
+  #install_pods()
+  #install_carthage()
 end
 
 #
@@ -212,7 +212,7 @@ def updateDeviceList(updateCerts)
     if (updateCerts) then
       provision(false)
     end
-  else 
+  else
     aise Exception.new("No devices.txt file found to upload")
   end
 end
@@ -342,7 +342,7 @@ def provision(readOnly)
           clone_branch_directly: true,
           force: !readOnly,
           readonly: readOnly)
-    else 
+    else
       match(git_url: matchRepo,
           type: type,
           git_branch: teamID,
