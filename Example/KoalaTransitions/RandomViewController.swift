@@ -17,17 +17,24 @@ class RandomViewController: UIViewController, CustomTransitions {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "navigation"
         view.backgroundColor = [.lightText, .orange, .blue, .red, .green, .darkGray].randomElement()
+
+        let label = Label()
+        label.text = transitioner?.animator.debugDescription
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
 
         view.addSubview(button)
         button.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(40)
             make.center.equalToSuperview()
             make.width.equalTo(140)
             make.height.equalTo(50)
         }
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        button.setTitle("launch", for: .normal)
+        button.setTitle("Next", for: .normal)
         button.addTarget(self, action: #selector(pressed), for: .touchUpInside)
     }
 

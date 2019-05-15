@@ -13,11 +13,12 @@
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
 		607FACEC1AFB9204008FA782 /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACEB1AFB9204008FA782 /* Tests.swift */; };
-		696A7E96228A5E1600DD18B7 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A7E95228A5E1600DD18B7 /* ListViewController.swift */; };
+		696A7E96228A5E1600DD18B7 /* ExpandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A7E95228A5E1600DD18B7 /* ExpandViewController.swift */; };
 		696A7E98228A5F1500DD18B7 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */; };
 		6FE53D86E021AA988E623FC3 /* Pods_KoalaTransitions_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 178DA9B8BE42CD97EB77EF16 /* Pods_KoalaTransitions_Example.framework */; };
 		F923799B228B2ED200446586 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923799A228B2ED200446586 /* FirstViewController.swift */; };
 		F92379A1228B51D300446586 /* RandomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A0228B51D300446586 /* RandomViewController.swift */; };
+		F92379A3228C6D9200446586 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A2228C6D9200446586 /* Label.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +44,7 @@
 		607FACE51AFB9204008FA782 /* KoalaTransitions_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KoalaTransitions_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
-		696A7E95228A5E1600DD18B7 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		696A7E95228A5E1600DD18B7 /* ExpandViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandViewController.swift; sourceTree = "<group>"; };
 		696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		8CAA46A045BEEE8F07FFEF18 /* Pods-KoalaTransitions_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoalaTransitions_Tests.release.xcconfig"; path = "Target Support Files/Pods-KoalaTransitions_Tests/Pods-KoalaTransitions_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		99DED77A1BFBB43F6A66F3FE /* Pods-KoalaTransitions_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoalaTransitions_Example.debug.xcconfig"; path = "Target Support Files/Pods-KoalaTransitions_Example/Pods-KoalaTransitions_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -53,6 +54,7 @@
 		F9237997228AF7E600446586 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		F923799A228B2ED200446586 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		F92379A0228B51D300446586 /* RandomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomViewController.swift; sourceTree = "<group>"; };
+		F92379A2228C6D9200446586 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
 		FB6B138AF04A9121DA0D4D1B /* Pods-KoalaTransitions_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoalaTransitions_Example.release.xcconfig"; path = "Target Support Files/Pods-KoalaTransitions_Example/Pods-KoalaTransitions_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,13 +105,14 @@
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */,
-				696A7E95228A5E1600DD18B7 /* ListViewController.swift */,
+				696A7E95228A5E1600DD18B7 /* ExpandViewController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				F923799A228B2ED200446586 /* FirstViewController.swift */,
 				F92379A0228B51D300446586 /* RandomViewController.swift */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
 				607FACD31AFB9204008FA782 /* Supporting Files */,
+				F92379A2228C6D9200446586 /* Label.swift */,
 			);
 			name = "Example for KoalaTransitions";
 			path = KoalaTransitions;
@@ -442,7 +445,8 @@
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				F92379A1228B51D300446586 /* RandomViewController.swift in Sources */,
-				696A7E96228A5E1600DD18B7 /* ListViewController.swift in Sources */,
+				696A7E96228A5E1600DD18B7 /* ExpandViewController.swift in Sources */,
+				F92379A3228C6D9200446586 /* Label.swift in Sources */,
 				696A7E98228A5F1500DD18B7 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

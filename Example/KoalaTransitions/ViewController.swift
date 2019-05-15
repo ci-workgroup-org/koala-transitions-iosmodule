@@ -16,10 +16,17 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "List"
+        title = "Modal"
+        let label = Label()
+        label.text = "Modal With Push Animation"
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
 
         view.addSubview(button)
         button.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(40)
             make.center.equalToSuperview()
             make.width.equalTo(140)
             make.height.equalTo(50)
@@ -38,6 +45,7 @@ class ViewController: UIViewController {
         let transitioner = Transitioner(animator: SlideAnimator(direction: .fromRightToLeft))
         let nextVC = DetailsViewController()
         let navC = UINavigationController(rootViewController: nextVC)
+        /// without this the transitioner would be immediately deinited
         nextVC.transitioner = transitioner
         navC.transitioningDelegate = transitioner
         present(navC, animated: true)

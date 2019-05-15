@@ -17,11 +17,18 @@ class FirstViewController: UIViewController, CustomTransitions {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "navigation"
         view.backgroundColor = [.lightText, .orange, .blue].randomElement()
+
+        let label = Label()
+        label.text = transitioner.debugDescription
+        view.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
 
         view.addSubview(button)
         button.snp.makeConstraints { make in
+            make.top.equalTo(label.snp.bottom).offset(40)
             make.center.equalToSuperview()
             make.width.equalTo(140)
             make.height.equalTo(50)

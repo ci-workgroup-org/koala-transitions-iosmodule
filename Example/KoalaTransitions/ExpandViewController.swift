@@ -1,5 +1,5 @@
 //
-//  ListViewController.swift
+//  ExpandViewController.swift
 //  KoalaTransitions_Example
 //
 //  Created by boulder on 5/13/19.
@@ -12,14 +12,14 @@ import SnapKit
 import SwiftyButton
 import UIKit
 
-class ListViewController: UIViewController {
+class ExpandViewController: UIViewController {
     let button = PressableButton()
     let topButton = PressableButton()
     let bottomLeftButton = PressableButton()
+    let bottomRightButton = UIButton()
     var transitioner: Transitioner?
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "List"
         view.backgroundColor = .lightGray
 
         view.addSubview(button)
@@ -54,13 +54,27 @@ class ListViewController: UIViewController {
         bottomLeftButton.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         bottomLeftButton.setTitle("launch", for: .normal)
         bottomLeftButton.addTarget(self, action: #selector(pressed), for: .touchUpInside)
+
+        view.addSubview(bottomRightButton)
+        bottomRightButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().inset(100)
+            make.trailing.equalToSuperview().inset(50)
+            make.height.width.equalTo(140)
+        }
+        bottomRightButton.setImage(UIImage(named: "image"), for: [])
+        bottomRightButton.addTarget(self, action: #selector(pressedImage), for: .touchUpInside)
     }
 
     @objc func pressed(_ button: UIControl) {
         let nextVC = DetailsViewController()
-        nextVC.transitioner = InOutTransitioner(inAnimator: ExpandFromFrameAnimator(button.frameInSuperview), outAnimator: SlideAnimator(direction: .fromBottomToTop))
+        nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview))
+        nextVC.setTransitioningDelegateToTransitioner()
+        present(nextVC, animated: true)
+    }
 
-        // nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview))
+    @objc func pressedImage(_ button: UIControl) {
+        let nextVC = DetailsViewController()
+        nextVC.transitioner = Transitioner(animator: MatchedItemsExpandFromFrameAnimator(button.frameInSuperview, originViewImage: UIImage(named: "image")!))
         nextVC.setTransitioningDelegateToTransitioner()
         present(nextVC, animated: true)
     }

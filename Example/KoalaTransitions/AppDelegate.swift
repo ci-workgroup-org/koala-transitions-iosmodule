@@ -23,11 +23,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let navVC = AnimatedNavigationController(rootViewController: FirstViewController())
         navVC.transitioner = Transitioner(animator: SlideAnimator(direction: .fromBottomToTop))
-        navVC.title = "animatedNav"
+        navVC.title = "AnimatedNav"
 
         let navVC2 = MultiAnimatedNavigationController(rootViewController: RandomViewController())
         navVC2.title = "Random"
-        tabController.setViewControllers([ListViewController(), ViewController(), navVC, navVC2], animated: true)
+
+        let expandVC = ExpandViewController()
+        expandVC.title = "Expand"
+
+        tabController.setViewControllers([ViewController(), expandVC, navVC, navVC2], animated: true)
 
         return true
     }
