@@ -8,8 +8,12 @@
 import Foundation
 import UIKit
 
+/// UINavigationController subclass that becomes it's own delegate to provide
+/// custom transitions
 public class AnimatedNavigationController: UINavigationController, CustomTransitions {
-    public var transitioner: Transitioner?
-    
-    
+    public var transitioner: Transitioner? {
+        didSet {
+            self.delegate = transitioner
+        }
+    }
 }

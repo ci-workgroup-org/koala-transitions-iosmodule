@@ -21,7 +21,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = tabController
         window?.makeKeyAndVisible()
 
-        tabController.setViewControllers([ListViewController(), ViewController(), AnimatedNavigationController(rootViewController: FirstViewController())], animated: true)
+        let navVC = AnimatedNavigationController(rootViewController: FirstViewController())
+        navVC.transitioner = Transitioner(animator: SlideAnimator(direction: .fromBottomToTop))
+        navVC.setTransitioningDelegateToTransitioner()
+        tabController.setViewControllers([ListViewController(), ViewController(), navVC], animated: true)
 
         return true
     }
