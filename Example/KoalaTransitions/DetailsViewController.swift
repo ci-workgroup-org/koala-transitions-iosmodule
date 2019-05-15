@@ -46,7 +46,7 @@ class DetailsViewController: UIViewController, CustomTransitions {
     }
 
     @objc func actionClose(_: UITapGestureRecognizer) {
-        dismissWithTransition()
+        dismiss(animated: true)
     }
 
     func animate(

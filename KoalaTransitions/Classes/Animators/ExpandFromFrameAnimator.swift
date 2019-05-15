@@ -7,18 +7,17 @@
 import UIKit
 
 /// ExpandFromFrameAnimator takes an intial Frame and animates the incoming ViewController
-/// from that frame to the final size
+/// from that `originFrame` to the final size, reversable
 public class ExpandFromFrameAnimator: NSObject, Animator {
     public let duration: Double
     public let originFrame: CGRect
-
     public var playDirection: AnimationDirection
 
     public var supportedPresentations = PresentaionType.all
 
-    public init(_ originFrame: CGRect = CGRect.zero, duration: Double = 0.40, direction: AnimationDirection = .forward) {
+    public init(_ originFrame: CGRect = CGRect.zero, duration: Double = 0.40) {
         self.originFrame = originFrame
-        playDirection = direction
+        playDirection = .forward
         self.duration = duration
     }
 

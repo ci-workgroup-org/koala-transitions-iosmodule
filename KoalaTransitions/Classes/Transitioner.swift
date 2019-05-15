@@ -7,10 +7,13 @@ import Foundation
 //
 import UIKit
 
-/// Tranisioner holds reference to the animator
+/// Tranisioner holds reference to the animator, and can be set as
+/// the `transitioningDelegate` on any UIViewController
 /// updates the 'playDirection' based on the presentation method called
 public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
     public let animator: Animator
+
+    /// foward the play direction to the backing animator
     public var playDirection: AnimationDirection {
         get {
             return animator.playDirection
@@ -20,9 +23,15 @@ public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
         }
     }
 
+    public override var debugDescription: String {
+        return "[Transitioner] direction: \(playDirection) animator: \(animator)"
+    }
+
     public init(animator: Animator) {
         self.animator = animator
     }
+
+    // MARK: - `UIViewControllerTransitioningDelegate` -
 
     public func animationController(
         forPresented _: UIViewController,
@@ -47,6 +56,8 @@ public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
     }
 }
 
+// MARK: - `UINavigationControllerDelegate` -
+
 extension Transitioner: UINavigationControllerDelegate {
     public func navigationController(_: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from _: UIViewController, to _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if animator.supportedPresentations.contains(.push), operation == .push {
@@ -61,7 +72,7 @@ extension Transitioner: UINavigationControllerDelegate {
 }
 
 /// InOutTransitioner holds reference to  two animators, a In and an Out
-/// In will always be set to playDirection forward and Out to backward
+/// inAnimator will always be set to playDirection `.forward` and outAnimator to `.backward`
 public class InOutTransitioner: Transitioner {
     let outAnimator: Animator
 
@@ -73,5 +84,24 @@ public class InOutTransitioner: Transitioner {
 
     public override func animationController(forDismissed _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return outAnimator
+    }
+}
+
+/// SelfRetainingTransitioner
+class SelfRetainingTransitioner: Transitioner {
+    enum Error: Swift.Error {
+        case animatorDoesNotSupportCompletion
+    }
+
+    init(_ transitioner: Transitioner) throws {
+        super.init(animator: transitioner.animator)
+
+        guard var animatorWithCompletion = transitioner.animator as? Animator & CompletionReporter else { throw Error.animatorDoesNotSupportCompletion }
+
+        /// retain self for one animation
+        animatorWithCompletion.animationComplete = { _ in
+            guard var animatorWithCompletion = self.animator as? Animator & CompletionReporter else { return }
+            animatorWithCompletion.animationComplete = nil
+        }
     }
 }

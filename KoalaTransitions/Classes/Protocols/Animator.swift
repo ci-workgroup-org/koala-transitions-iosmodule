@@ -14,7 +14,7 @@ public enum AnimationDirection {
     case backward
 }
 
-/// PresentaionType represents the types of animation
+/// PresentaionType represents the types of presentation to animate
 public struct PresentaionType: OptionSet {
     public let rawValue: Int
 
@@ -22,15 +22,31 @@ public struct PresentaionType: OptionSet {
         self.rawValue = rawValue
     }
 
+    /// presenting modally from a viewController
     static let present = PresentaionType(rawValue: 1 << 0)
-    static let push = PresentaionType(rawValue: 1 << 2)
-    static let dismiss = PresentaionType(rawValue: 1 << 4)
-    static let pop = PresentaionType(rawValue: 1 << 8)
+    /// pushing on to a UINavigationController's stack
+    static let push = PresentaionType(rawValue: 1 << 1)
+    /// dismissing modally
+    static let dismiss = PresentaionType(rawValue: 1 << 2)
+    /// popping from a UINavigationController's stack
+    static let pop = PresentaionType(rawValue: 1 << 4)
 
     static let all: PresentaionType = [.present, .push, .dismiss, .pop]
 }
 
+/// The `Animator` Protocol adds two variables to the UIViewControllerAnimatedTransitioning
+/// allowing for better control of when and how an animation will be used
 public protocol Animator: UIViewControllerAnimatedTransitioning {
+    /// playDirection is set from the Transitioner based on the current transition
+    /// while an animator not required to support backwards animations this property is required
     var playDirection: AnimationDirection { get set }
+    /// there are four types of presentation, the Transitioner will check the current
+    /// presentation against this set and only use the animator if supported
     var supportedPresentations: PresentaionType { get }
+}
+
+/// The `ReportsCompletion` Protocol adds two variables to the UIViewControllerAnimatedTransitioning
+/// allowing for better control of when and how an animation will be used
+public protocol CompletionReporter {
+    var animationComplete: ((AnimationDirection) -> Void)? { get set }
 }

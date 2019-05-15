@@ -18,13 +18,21 @@ public enum SlideDirection {
 }
 
 /// SlideAnimator does a mock push but from any of the 4 sides
-public class SlideAnimator: NSObject, Animator {
-    var direction: SlideDirection
+public class SlideAnimator: NSObject, Animator, CompletionReporter {
+    public var animationComplete: ((AnimationDirection) -> Void)?
+
+    public let direction: SlideDirection
+    public let duration: Double
     public var playDirection: AnimationDirection = .forward
     public var supportedPresentations = PresentaionType.all
 
-    public init(direction: SlideDirection = .fromRightToLeft) {
+    public override var debugDescription: String {
+        return "SlideAnimator: \(playDirection) direction: \(direction)"
+    }
+
+    public init(direction: SlideDirection = .fromRightToLeft, duration: Double = 0.3) {
         self.direction = direction
+        self.duration = duration
     }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {

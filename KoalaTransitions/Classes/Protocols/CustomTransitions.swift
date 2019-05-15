@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 /// ViewControllers conforming to this protocol manage the lifecycle
-/// of their presented Transitioner and can call the convience method
-/// `dismissWithTransition` to dismiss using that transition
+/// of their presenting/dimissing Transitioner and can call the convience method
+/// `dismissWithTransition` to dismiss using a transition
 public protocol CustomTransitions: UIViewController {
     var transitioner: Transitioner? { get set }
 }
@@ -22,19 +22,30 @@ extension CustomTransitions {
             navController.delegate = transitioner
         }
     }
+}
 
-    public func dismissWithTransition(completion: (() -> Void)? = nil) {
-        if let transitioner = transitioner {
-            transitioningDelegate = transitioner
-        }
-        dismiss(animated: true, completion: completion)
+extension UIViewController {
+    public func present(_ viewControllerToPresent: UIViewController, transition transitioner: Transitioner, completion: (() -> Void)? = nil) {
+        transitioner.playDirection = .forward
+        transitioningDelegate = SelfRetainingTransitioner( transitioner)
+        present(viewControllerToPresent, animated: true, completion: {
+            completion?()
+        })
     }
 
-    public func popWithTransition(completion _: (() -> Void)? = nil) {
-        if let transitioner = transitioner {
-            transitioner.playDirection = .backward
-            transitioningDelegate = transitioner
-        }
+    public func dismiss(with transitioner: Transitioner, completion: (() -> Void)? = nil) {
+        transitioner.playDirection = .backward
+        transitioningDelegate = SelfRetainingTransitioner( transitioner)
+        dismiss(animated: true, completion: {
+            completion?()
+        })
+    }
+
+    /// pop's the current view controller from it's NavigationStack
+    /// NOTE: this overwrites the navigationController's `.delegate` property
+    public func pop(with transitioner: Transitioner, completion _: (() -> Void)? = nil) {
+        transitioner.playDirection = .backward
+        navigationController?.delegate = SelfRetainingTransitioner( transitioner )
         navigationController?.popViewController(animated: true)
     }
 }
