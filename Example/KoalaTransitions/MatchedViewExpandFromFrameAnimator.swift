@@ -18,20 +18,14 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     public var playDirection: AnimationDirection
     public var supportedPresentations = PresentaionType.all
 
-    public init(_ originFrame: CGRect = CGRect.zero, originView: UIView, finalView: UIView, duration: Double = 0.50) {
+    public init(_ originFrame: CGRect = CGRect.zero, originView: UIView, finalView: UIView, duration: Double = 0.40) {
         self.originFrame = originFrame
         self.finalView = finalView
         self.originView = originView
 
-//        if let button = originView as? UIButton, let image = button.image(for: .normal) {
-//            originImageView = UIImageView(image: image)
-//            originImageView.clipsToBounds = true
-//            originImageView.contentMode = .scaleAspectFill
-//
-//        } else {
         originImageView = UIImageView(image: originView.snapshot())
         originImageView.contentMode = .scaleToFill
-//        }
+
         self.duration = duration
         playDirection = .forward
     }
@@ -99,7 +93,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                     toView.transform = CGAffineTransform.identity
                     toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
 
-                    let imageScaleTransform = self.scaleTransform(from: finalViewFrame, to: initialFrame)
+                    let imageScaleTransform = self.scaleTransform(from: finalViewFrame, to: self.originFrame)
                     self.originImageView.transform = imageScaleTransform
                     self.originImageView.center = CGPoint(x: finalViewFrame.midX, y: finalViewFrame.midY)
 
@@ -133,13 +127,39 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
             containerView.addSubview(toView)
             containerView.addSubview(fromView)
 
+            let finalViewFrame: CGRect
+            if let view = fromView.subviews.first(where: { $0 == self.finalView }) {
+                finalViewFrame = view.frameInSuperview
+            } else {
+                finalViewFrame = finalFrame
+            }
+
+            let imageScaleTransform = scaleTransform(from: finalViewFrame, to: originFrame)
+            originImageView.transform = imageScaleTransform
+            originImageView.center = CGPoint(x: finalViewFrame.midX, y: finalViewFrame.midY)
+            containerView.addSubview(originImageView)
+
+            let dismissDuration = duration * 0.75
             UIView.animate(
-                withDuration: duration,
+                withDuration: dismissDuration * 0.6,
+                animations: {
+                    self.originImageView.alpha = 1.0
+                    fromView.alpha = 0.0
+                }
+            )
+
+            UIView.animate(
+                withDuration: dismissDuration,
                 animations: {
                     fromView.transform = scalingTransform
                     fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+
+                    self.originImageView.transform = CGAffineTransform.identity
+                    self.originImageView.center = CGPoint(x: self.originFrame.midX, y: self.originFrame.midY)
+
                 },
                 completion: { _ in
+                    self.originImageView.removeFromSuperview()
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
