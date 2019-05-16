@@ -67,14 +67,15 @@ class ExpandViewController: UIViewController {
 
     @objc func pressed(_ button: UIControl) {
         let nextVC = DetailsViewController()
-        nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview))
+        nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview, duration: 1.3))
         nextVC.setTransitioningDelegateToTransitioner()
         present(nextVC, animated: true)
     }
 
     @objc func pressedImage(_ button: UIControl) {
         let nextVC = DetailsViewController()
-        nextVC.transitioner = Transitioner(animator: MatchedItemsExpandFromFrameAnimator(button.frameInSuperview, originViewImage: UIImage(named: "image")!))
+
+        nextVC.transitioner = Transitioner(animator: MatchedViewExpandFromFrameAnimator(button.frameInSuperview, originView: button, finalView: nextVC.topView))
         nextVC.setTransitioningDelegateToTransitioner()
         present(nextVC, animated: true)
     }

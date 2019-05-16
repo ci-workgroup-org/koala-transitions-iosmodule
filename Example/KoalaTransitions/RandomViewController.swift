@@ -11,7 +11,7 @@ import SnapKit
 import SwiftyButton
 import UIKit
 
-class RandomViewController: UIViewController, CustomTransitions {
+class RandomViewController: UIViewController, CustomTransitionable {
     var transitioner: Transitioner?
     let button = PressableButton()
 

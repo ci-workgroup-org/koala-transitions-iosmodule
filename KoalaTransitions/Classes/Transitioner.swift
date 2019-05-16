@@ -24,7 +24,7 @@ public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
     }
 
     public override var debugDescription: String {
-        return "[Transitioner] direction: \(playDirection) animator: \(animator)"
+        return "[Transitioner] direction: \(playDirection) animator: \(animator.debugDescription ?? "")"
     }
 
     public init(animator: Animator) {
@@ -84,24 +84,5 @@ public class InOutTransitioner: Transitioner {
 
     public override func animationController(forDismissed _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return outAnimator
-    }
-}
-
-/// SelfRetainingTransitioner
-class SelfRetainingTransitioner: Transitioner {
-    enum Error: Swift.Error {
-        case animatorDoesNotSupportCompletion
-    }
-
-    init(_ transitioner: Transitioner) throws {
-        super.init(animator: transitioner.animator)
-
-        guard var animatorWithCompletion = transitioner.animator as? Animator & CompletionReporter else { throw Error.animatorDoesNotSupportCompletion }
-
-        /// retain self for one animation
-        animatorWithCompletion.animationComplete = { _ in
-            guard var animatorWithCompletion = self.animator as? Animator & CompletionReporter else { return }
-            animatorWithCompletion.animationComplete = nil
-        }
     }
 }

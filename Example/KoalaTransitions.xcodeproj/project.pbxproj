@@ -19,6 +19,7 @@
 		F923799B228B2ED200446586 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923799A228B2ED200446586 /* FirstViewController.swift */; };
 		F92379A1228B51D300446586 /* RandomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A0228B51D300446586 /* RandomViewController.swift */; };
 		F92379A3228C6D9200446586 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A2228C6D9200446586 /* Label.swift */; };
+		F92379A5228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A4228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		F923799A228B2ED200446586 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		F92379A0228B51D300446586 /* RandomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomViewController.swift; sourceTree = "<group>"; };
 		F92379A2228C6D9200446586 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
+		F92379A4228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedViewExpandFromFrameAnimator.swift; sourceTree = "<group>"; };
 		FB6B138AF04A9121DA0D4D1B /* Pods-KoalaTransitions_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KoalaTransitions_Example.release.xcconfig"; path = "Target Support Files/Pods-KoalaTransitions_Example/Pods-KoalaTransitions_Example.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +105,7 @@
 		607FACD21AFB9204008FA782 /* Example for KoalaTransitions */ = {
 			isa = PBXGroup;
 			children = (
+				F92379A4228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */,
 				696A7E95228A5E1600DD18B7 /* ExpandViewController.swift */,
@@ -447,6 +450,7 @@
 				F92379A1228B51D300446586 /* RandomViewController.swift in Sources */,
 				696A7E96228A5E1600DD18B7 /* ExpandViewController.swift in Sources */,
 				F92379A3228C6D9200446586 /* Label.swift in Sources */,
+				F92379A5228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift in Sources */,
 				696A7E98228A5F1500DD18B7 /* DetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

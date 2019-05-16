@@ -10,7 +10,7 @@ import UIKit
 
 /// UINavigationController subclass that becomes it's own delegate to provide
 /// custom transitions, Transitioner using a Transitioner to controller presentation
-public class AnimatedNavigationController: UINavigationController, CustomTransitions {
+public class AnimatedNavigationController: UINavigationController, CustomTransitionable {
     public var transitioner: Transitioner? {
         didSet {
             delegate = transitioner
@@ -50,12 +50,12 @@ public class MultiAnimatedNavigationController: UINavigationController, UINaviga
 
     public func navigationController(_: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from: UIViewController, to: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if operation == .push {
-            if let transitioner = (to as? CustomTransitions)?.transitioner {
+            if let transitioner = (to as? CustomTransitionable)?.transitioner {
                 transitioner.playDirection = .forward
                 return transitioner.animator
             }
         } else if operation == .pop {
-            if let transitioner = (from as? CustomTransitions)?.transitioner {
+            if let transitioner = (from as? CustomTransitionable)?.transitioner {
                 transitioner.playDirection = .backward
                 return transitioner.animator
             }

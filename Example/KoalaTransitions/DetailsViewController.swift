@@ -10,10 +10,10 @@ import Foundation
 import KoalaTransitions
 import UIKit
 
-class DetailsViewController: UIViewController, CustomTransitions {
+class DetailsViewController: UIViewController, CustomTransitionable {
     var transitioner: Transitioner?
 
-    let topView = UIView()
+    let topView = UIImageView(image: UIImage(named: "image"))
     let bottomLeftView = UIView()
     let bottomRightView = UIView()
 
@@ -29,8 +29,9 @@ class DetailsViewController: UIViewController, CustomTransitions {
         view.addSubview(bottomRightView)
         bottomRightView.backgroundColor = .orange
 
+        topView.contentMode = .scaleToFill
         topView.snp.makeConstraints { make in
-            make.leading.top.leading.equalToSuperview()
+            make.leading.top.trailing.equalToSuperview()
             make.height.equalTo(250)
         }
         bottomLeftView.snp.makeConstraints { make in
@@ -49,10 +50,24 @@ class DetailsViewController: UIViewController, CustomTransitions {
         dismiss(animated: true)
     }
 
-    func animate(
-        alongsideTransition _: ((UIViewControllerTransitionCoordinatorContext) -> Void)?,
-        completion _: ((UIViewControllerTransitionCoordinatorContext) -> Void)? = nil
-    ) -> Bool {
-        return true
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (_) -> Void in
+
+            let orient = UIApplication.shared.statusBarOrientation
+
+            switch orient {
+            case .portrait:
+                print("Portrait")
+            // Do something
+            default:
+                print("Anything But Portrait")
+                // Do something else
+            }
+
+        }, completion: { (_) -> Void in
+            print("rotation completed")
+        })
+
+        super.viewWillTransition(to: size, with: coordinator)
     }
 }

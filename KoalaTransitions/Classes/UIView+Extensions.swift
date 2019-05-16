@@ -2,6 +2,8 @@
 
 // MARK: - <#Description#>
 
+import UIKit
+
 extension UIView {
     /// returns the receiver's frame in it's superview coordinates, or it's frame
     public var frameInSuperview: CGRect {
@@ -20,14 +22,14 @@ extension UIView {
         defer { UIGraphicsEndImageContext() }
 
         guard let context = UIGraphicsGetCurrentContext() else {
-            debugPrint("No context to render image.")
+            print("No context to render image.")
             return UIImage()
         }
 
         layer.render(in: context)
 
         guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
-            debugPrint("Failed to render image from current context.")
+            print("Failed to render image from current context.")
             return UIImage()
         }
 

@@ -23,15 +23,15 @@ public struct PresentaionType: OptionSet {
     }
 
     /// presenting modally from a viewController
-    static let present = PresentaionType(rawValue: 1 << 0)
+    public static let present = PresentaionType(rawValue: 1 << 0)
     /// pushing on to a UINavigationController's stack
-    static let push = PresentaionType(rawValue: 1 << 1)
+    public static let push = PresentaionType(rawValue: 1 << 1)
     /// dismissing modally
-    static let dismiss = PresentaionType(rawValue: 1 << 2)
+    public static let dismiss = PresentaionType(rawValue: 1 << 2)
     /// popping from a UINavigationController's stack
-    static let pop = PresentaionType(rawValue: 1 << 4)
+    public static let pop = PresentaionType(rawValue: 1 << 4)
 
-    static let all: PresentaionType = [.present, .push, .dismiss, .pop]
+    public static let all: PresentaionType = [.present, .push, .dismiss, .pop]
 }
 
 /// The `Animator` Protocol adds two variables to the UIViewControllerAnimatedTransitioning

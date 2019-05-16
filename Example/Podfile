@@ -2,7 +2,7 @@ platform :ios, '12.0'
 use_frameworks!
 
 
-target 'KoalaTransitions_Example' do
+target 'KoalaTransitions_Example' do |target|
   pod 'KoalaTransitions', :path => '../'
   pod 'SnapKit'
   pod 'SwiftyButton'
@@ -20,4 +20,20 @@ target 'KoalaTransitions_Example' do
     pod 'Quick'
     pod 'Nimble'
   end
+
 end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if target.name == 'KoalaTransitions'
+      target.build_configurations.each do |config|
+        if config.name == 'Debug'
+            config.build_settings['OTHER_SWIFT_FLAGS'] = '-DDEBUG -Xfrontend -warn-long-function-bodies=50 -Xfrontend -warn-long-expression-type-checking=50'
+            else
+            config.build_settings['OTHER_SWIFT_FLAGS'] = ''
+        end
+      end
+    end
+  end
+end
+

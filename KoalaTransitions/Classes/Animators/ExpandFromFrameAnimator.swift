@@ -55,7 +55,6 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
             finalFrame = originFrame
 
             let xScaleFactor = finalFrame.width / initialFrame.width
-
             let yScaleFactor = finalFrame.height / initialFrame.height
             scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
 
