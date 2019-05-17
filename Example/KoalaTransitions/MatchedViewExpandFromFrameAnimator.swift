@@ -112,17 +112,17 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                     self.originImageView.alpha = 0.0
                     toView.alpha = 1.0
                 },
-                completion: { _ in self.originImageView.removeFromSuperview() }
+                completion: { _ in
+                    self.originImageView.removeFromSuperview()
+                    underImageView.removeFromSuperview()
+                }
             )
 
         case .backward:
             initialFrame = fromView.frame
             finalFrame = originFrame
 
-            let xScaleFactor = finalFrame.width / initialFrame.width
-
-            let yScaleFactor = finalFrame.height / initialFrame.height
-            scalingTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+            let scalingTransform = scaleTransform(from: finalFrame, to: initialFrame)
 
             containerView.addSubview(toView)
             containerView.addSubview(fromView)
@@ -138,6 +138,8 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
             originImageView.transform = imageScaleTransform
             originImageView.center = CGPoint(x: finalViewFrame.midX, y: finalViewFrame.midY)
             containerView.addSubview(originImageView)
+
+            originView.alpha = 0
 
             let dismissDuration = duration * 0.75
             UIView.animate(
@@ -156,7 +158,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
 
                     self.originImageView.transform = CGAffineTransform.identity
                     self.originImageView.center = CGPoint(x: self.originFrame.midX, y: self.originFrame.midY)
-
+                    self.originView.alpha = 1.0
                 },
                 completion: { _ in
                     self.originImageView.removeFromSuperview()

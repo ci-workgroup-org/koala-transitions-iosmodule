@@ -44,13 +44,15 @@ class TableViewController: UIViewController, CustomTransitionable, UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
         cell?.textLabel?.text = "cell \(indexPath.row)"
+        cell?.imageView?.image = UIImage(named: "image")
+
         return cell ?? UITableViewCell()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let cell = tableView.cellForRow(at: indexPath) {
+        if let cell = tableView.cellForRow(at: indexPath), let imageView = cell.imageView {
             let nextVC = DetailsViewController()
-            nextVC.transitioner = Transitioner(animator: MatchedViewExpandFromFrameAnimator(cell.frameInSuperview, originView: cell, finalView: nextVC.topView))
+            nextVC.transitioner = Transitioner(animator: MatchedViewExpandFromFrameAnimator(imageView.frameInSuperview, originView: imageView, finalView: nextVC.topView))
             nextVC.setTransitioningDelegateToTransitioner()
             present(nextVC, animated: true)
         }
