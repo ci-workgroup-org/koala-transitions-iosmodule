@@ -67,7 +67,7 @@ class ExpandViewController: UIViewController {
 
     @objc func pressed(_ button: UIControl) {
         let nextVC = DetailsViewController()
-        nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview, duration: 1.3))
+        nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview, duration: 0.3))
         nextVC.setTransitioningDelegateToTransitioner()
         present(nextVC, animated: true)
     }

@@ -31,7 +31,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let expandVC = ExpandViewController()
         expandVC.title = "Expand"
 
-        tabController.setViewControllers([ViewController(), expandVC, navVC, navVC2], animated: true)
+        let tableView = TableViewController()
+        tableView.title = "tableView"
+
+        tabController.setViewControllers([ViewController(), expandVC, navVC, navVC2, tableView], animated: true)
 
         return true
     }
