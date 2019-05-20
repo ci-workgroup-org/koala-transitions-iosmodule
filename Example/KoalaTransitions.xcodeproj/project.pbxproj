@@ -16,6 +16,7 @@
 		696A7E96228A5E1600DD18B7 /* ExpandViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A7E95228A5E1600DD18B7 /* ExpandViewController.swift */; };
 		696A7E98228A5F1500DD18B7 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */; };
 		6FE53D86E021AA988E623FC3 /* Pods_KoalaTransitions_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 178DA9B8BE42CD97EB77EF16 /* Pods_KoalaTransitions_Example.framework */; };
+		F90CE53C228F5BA50035982A /* MatchedDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F90CE53B228F5BA50035982A /* MatchedDetailsViewController.swift */; };
 		F923799B228B2ED200446586 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923799A228B2ED200446586 /* FirstViewController.swift */; };
 		F92379A1228B51D300446586 /* RandomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A0228B51D300446586 /* RandomViewController.swift */; };
 		F92379A3228C6D9200446586 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A2228C6D9200446586 /* Label.swift */; };
@@ -53,6 +54,7 @@
 		9CB6976294BBD50122F68999 /* Pods_KoalaTransitions_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KoalaTransitions_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF6B995F05F44FE6C89C0B74 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		F78B23DDC09233B351357C91 /* KoalaTransitions.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = KoalaTransitions.podspec; path = ../KoalaTransitions.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		F90CE53B228F5BA50035982A /* MatchedDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchedDetailsViewController.swift; sourceTree = "<group>"; };
 		F9237997228AF7E600446586 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftlint.yml; sourceTree = "<group>"; };
 		F923799A228B2ED200446586 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		F92379A0228B51D300446586 /* RandomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomViewController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				F92379A4228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */,
+				F90CE53B228F5BA50035982A /* MatchedDetailsViewController.swift */,
 				696A7E95228A5E1600DD18B7 /* ExpandViewController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
 				F923799A228B2ED200446586 /* FirstViewController.swift */,
@@ -451,6 +454,7 @@
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				F92379A1228B51D300446586 /* RandomViewController.swift in Sources */,
+				F90CE53C228F5BA50035982A /* MatchedDetailsViewController.swift in Sources */,
 				696A7E96228A5E1600DD18B7 /* ExpandViewController.swift in Sources */,
 				F92379A3228C6D9200446586 /* Label.swift in Sources */,
 				F92379A5228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift in Sources */,

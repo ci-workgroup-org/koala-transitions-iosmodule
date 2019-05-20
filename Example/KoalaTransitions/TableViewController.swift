@@ -52,7 +52,7 @@ class TableViewController: UIViewController, CustomTransitionable, UITableViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath), let imageView = cell.imageView {
             let nextVC = DetailsViewController()
-            nextVC.transitioner = Transitioner(animator: MatchedViewExpandFromFrameAnimator(imageView.frameInSuperview, originView: imageView, finalView: nextVC.topView))
+            nextVC.transitioner = Transitioner(animator: MatchedViewExpandFromFrameAnimator(cell.frameInSuperview, originView: cell, finalView: nextVC.topView))
             nextVC.setTransitioningDelegateToTransitioner()
             present(nextVC, animated: true)
         }
