@@ -43,10 +43,6 @@ public protocol Animator: UIViewControllerAnimatedTransitioning {
     /// there are four types of presentation, the Transitioner will check the current
     /// presentation against this set and only use the animator if supported
     var supportedPresentations: PresentaionType { get }
-}
-
-/// The `ReportsCompletion` Protocol adds two variables to the UIViewControllerAnimatedTransitioning
-/// allowing for better control of when and how an animation will be used
-public protocol CompletionReporter {
-    var animationComplete: ((AnimationDirection) -> Void)? { get set }
+    /// the Duration of this animation
+    var duration: Double { get }
 }

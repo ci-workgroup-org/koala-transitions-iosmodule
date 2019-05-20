@@ -16,6 +16,11 @@ public protocol CustomTransitionable: UIViewController {
 }
 
 extension CustomTransitionable {
+    public func setTransitioner(_ transitioner: Transitioner?) {
+        self.transitioner = transitioner
+        transitioningDelegate = transitioner
+    }
+
     public func setTransitioningDelegateToTransitioner() {
         transitioningDelegate = transitioner
         if let navController = self as? UINavigationController {

@@ -11,9 +11,14 @@ import UIKit
 public class FadeAnimator: NSObject, Animator {
     public var playDirection: AnimationDirection = .forward
     public var supportedPresentations = PresentaionType.all
+    public let duration: Double
+
+    public init(duration: Double = 0.3) {
+        self.duration = duration
+    }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
+        return duration
     }
 
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {

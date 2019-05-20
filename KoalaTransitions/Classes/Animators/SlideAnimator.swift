@@ -1,10 +1,9 @@
 //
 //  SlideAnimator.swift
-//  ThePattern
+//  KoalaTransitions
 //
-//  Created by nicholas Trienens on 2/10/16.
-//  Copyright © 2016 Fuzz Productions. All rights reserved.
-//
+//  Created by Nicholas Trienens on 5/14/19.
+//  Copyright (c) 2019 nick@fuzzproductions.com. All rights reserved.
 
 import Foundation
 import UIKit
@@ -18,7 +17,7 @@ public enum SlideDirection {
 }
 
 /// SlideAnimator does a mock push but from any of the 4 sides
-public class SlideAnimator: NSObject, Animator, CompletionReporter {
+public class SlideAnimator: NSObject, Animator {
     public var animationComplete: ((AnimationDirection) -> Void)?
 
     public let direction: SlideDirection
@@ -36,11 +35,10 @@ public class SlideAnimator: NSObject, Animator, CompletionReporter {
     }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.25
+        return duration
     }
 
     public func animateTransition(using context: UIViewControllerContextTransitioning) {
-        print(context)
         guard let toViewController = context.viewController(forKey: UITransitionContextViewControllerKey.to),
             let fromViewController = context.viewController(forKey: UITransitionContextViewControllerKey.from) else { return }
 
