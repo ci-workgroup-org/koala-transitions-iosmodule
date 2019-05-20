@@ -62,21 +62,11 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
             finalFrame = toView.frame
             toView.alpha = 0.0
 
-            toView.layoutIfNeeded()
-            toView.updateConstraints()
-            toView.setNeedsLayout()
-            toView.layoutIfNeeded()
-
             let underImageView = UIImageView(image: fromView.snapshot())
             containerView.addSubview(underImageView)
             underImageView.frame = fromView.frame
 
-            let finalViewFrame: CGRect
-            if let view = toView.subviews.first(where: { $0 == self.finalView }) {
-                finalViewFrame = view.frameInSuperview
-            } else {
-                finalViewFrame = finalFrame
-            }
+            let finalViewFrame = finalView.frameInSuperview
 
             scalingTransform = scaleTransform(from: initialFrame, to: finalFrame)
             toView.transform = scalingTransform
