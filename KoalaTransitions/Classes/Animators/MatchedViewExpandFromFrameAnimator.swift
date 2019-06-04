@@ -5,7 +5,6 @@
 //  Copyright (c) 2019 nick@fuzzproductions.com. All rights reserved.
 //
 
-import KoalaTransitions
 import UIKit
 
 public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
@@ -54,18 +53,12 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
         switch playDirection {
         case .forward:
 
-            print(originView)
             originView.alpha = 0
             originView.isHidden = true
 
             initialFrame = originFrame
             finalFrame = toView.frame
             toView.alpha = 0.0
-
-            toView.layoutIfNeeded()
-            toView.updateConstraints()
-            toView.setNeedsLayout()
-            toView.layoutIfNeeded()
 
             let underImageView = UIImageView(image: fromView.snapshot())
             containerView.addSubview(underImageView)
@@ -80,7 +73,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
 
             scalingTransform = scaleTransform(from: initialFrame, to: finalFrame)
             toView.transform = scalingTransform
-            toView.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
+            toView.center = initialFrame.center
             toView.clipsToBounds = true
             containerView.addSubview(toView)
 
@@ -91,11 +84,11 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 withDuration: duration,
                 animations: {
                     toView.transform = CGAffineTransform.identity
-                    toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                    toView.center = finalFrame.center
 
-                    let imageScaleTransform = self.scaleTransform(from: finalViewFrame, to: self.originFrame)
+                    let imageScaleTransform = finalViewFrame.scaleTransform(to: self.originFrame)
                     self.originImageView.transform = imageScaleTransform
-                    self.originImageView.center = CGPoint(x: finalViewFrame.midX, y: finalViewFrame.midY)
+                    self.originImageView.center = finalViewFrame.center
 
                 },
                 completion: { _ in
@@ -119,10 +112,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
             initialFrame = fromView.frame
             finalFrame = originFrame
 
-            let xScaleFactor = finalFrame.width / initialFrame.width
-
-            let yScaleFactor = finalFrame.height / initialFrame.height
-            scalingTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+            scalingTransform = finalFrame.scaleTransform(to: initialFrame)
 
             containerView.addSubview(toView)
             containerView.addSubview(fromView)
@@ -136,7 +126,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
 
             let imageScaleTransform = scaleTransform(from: finalViewFrame, to: originFrame)
             originImageView.transform = imageScaleTransform
-            originImageView.center = CGPoint(x: finalViewFrame.midX, y: finalViewFrame.midY)
+            originImageView.center = finalViewFrame.center
             containerView.addSubview(originImageView)
 
             let dismissDuration = duration * 0.75
@@ -152,10 +142,10 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 withDuration: dismissDuration,
                 animations: {
                     fromView.transform = scalingTransform
-                    fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                    fromView.center = finalFrame.center
 
                     self.originImageView.transform = CGAffineTransform.identity
-                    self.originImageView.center = CGPoint(x: self.originFrame.midX, y: self.originFrame.midY)
+                    self.originImageView.center = self.originFrame.center
 
                 },
                 completion: { _ in

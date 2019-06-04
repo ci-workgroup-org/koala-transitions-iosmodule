@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  KoalaTransitions
+//  KoalaTransitions_Example
 //
 //  Created by nick@fuzzproductions.com on 05/13/2019.
 //  Copyright (c) 2019 nick@fuzzproductions.com. All rights reserved.
@@ -28,14 +28,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navVC2 = MultiAnimatedNavigationController(rootViewController: RandomViewController())
         navVC2.title = "Random"
 
-        let expandVC = ExpandViewController()
+        let expandVC = ExpandingExample.MainController()
         expandVC.title = "Expand"
 
         let tableView = TableViewController()
-        tableView.title = "tableView"
+        tableView.title = "TableView"
 
         tabController.setViewControllers([ViewController(), expandVC, navVC, navVC2, tableView], animated: true)
-
         return true
     }
 }

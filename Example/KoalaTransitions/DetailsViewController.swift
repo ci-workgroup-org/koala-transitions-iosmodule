@@ -2,8 +2,8 @@
 //  DetailsViewController.swift
 //  KoalaTransitions_Example
 //
-//  Created by boulder on 5/13/19.
-//  Copyright © 2019 CocoaPods. All rights reserved.
+//  Created by nick@fuzzproductions.com on 05/13/2019.
+//  Copyright (c) 2019 nick@fuzzproductions.com. All rights reserved.
 //
 
 import Foundation

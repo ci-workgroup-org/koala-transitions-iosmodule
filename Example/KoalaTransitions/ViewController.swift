@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  KoalaTransitions
+//  KoalaTransitions_Example
 //
 //  Created by nick@fuzzproductions.com on 05/13/2019.
 //  Copyright (c) 2019 nick@fuzzproductions.com. All rights reserved.
