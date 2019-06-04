@@ -94,25 +94,16 @@ public class MatchedElementsAnimator: NSObject, Animator {
             containerView.addSubview(toView)
             containerView.addSubview(fromView)
 
-            elementPairs.hideOriginViews()
-
-//            let finalViewFrame: CGRect
-//            if let view = fromView.subviews.first(where: { $0 == self.finalView }) {
-//                finalViewFrame = view.frameInSuperview
-//            } else {
-//                finalViewFrame = finalFrame
-//            }
-
-//            let imageScaleTransform = scaleTransform(from: finalViewFrame, to: originFrame)
-//            originImageView.transform = imageScaleTransform
-//            originImageView.center = CGPoint(x: finalViewFrame.midX, y: finalViewFrame.midY)
-//            containerView.addSubview(originImageView)
+            let animatableViews = elementPairs.map { SnapshottedElementPair(pair: $0) }
+            animatableViews.forEach { containerView.addSubview($0.imageView) }
 
             let dismissDuration = duration * 0.75
             UIView.animate(
                 withDuration: dismissDuration * 0.6,
                 animations: {
                     fromView.alpha = 0.0
+                    self.elementPairs.showOriginViews()
+                    animatableViews.animateOpacity(direction: self.playDirection)
                 }
             )
 
@@ -124,6 +115,8 @@ public class MatchedElementsAnimator: NSObject, Animator {
 
                 },
                 completion: { _ in
+                    animatableViews.removeSnapshotViews()
+
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
