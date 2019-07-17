@@ -53,8 +53,6 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
 
         switch playDirection {
         case .forward:
-
-            print(originView)
             originView.alpha = 0
             originView.isHidden = true
 

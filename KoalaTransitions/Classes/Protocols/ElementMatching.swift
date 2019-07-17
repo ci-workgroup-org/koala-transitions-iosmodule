@@ -12,7 +12,7 @@ import UIKit
 /// to provide a set of elements for animation, these elements
 /// are them attempted to be matched to the presenting controllers elements
 public protocol ElementMatching: UIViewController {
-    func elements() -> [ElementInterface]
+    func elementsForAnimtion() -> [ElementInterface]
 }
 
 public protocol ElementInterface {
@@ -21,29 +21,29 @@ public protocol ElementInterface {
     func createPair(_ element: ElementInterface) -> ElementPair
 }
 
-public protocol Matchable {
-//    static func == (lhs: Matchable, rhs: Matchable) -> Bool
-}
+public protocol Matchable {}
 
 /// This struct is returned from the viewController to be presented
 /// then should be transitioned into a ViewPair
 public struct Element<Identifier: Equatable>: ElementInterface {
     public let view: UIView
     public let usage: Identifier
+    public let snapshot: UIImage?
 
-    public init(view: UIView, use: Identifier) {
+    public init(view: UIView, use: Identifier, snapshot: UIImage? = nil) {
         self.view = view
         usage = use
+        self.snapshot = snapshot
     }
 
     public func matchesUsage(other: ElementInterface) -> Bool {
-        guard let other = other as? Element,
-            let otherUsage = other.usage as? Identifier else { return false }
+        guard let other = other as? Element else { return false }
+        let otherUsage = other.usage
         return otherUsage == usage
     }
 
     public func createPair(_ element: ElementInterface) -> ElementPair {
-        return ElementPair(fromView: view, finalView: element.view, shouldScale: false)
+        return ElementPair(fromView: view, finalView: element.view, shouldScale: false, snapshot: snapshot ?? view.snapshot())
     }
 }
 
@@ -51,11 +51,13 @@ public struct ElementPair {
     let fromView: UIView
     let finalView: UIView
     let shouldScale: Bool
+    let snapshot: UIImage
 
-    public init(fromView: UIView, finalView: UIView, shouldScale: Bool = true) {
+    public init(fromView: UIView, finalView: UIView, shouldScale: Bool = true, snapshot: UIImage) {
         self.fromView = fromView
         self.finalView = finalView
         self.shouldScale = shouldScale
+        self.snapshot = snapshot
     }
 }
 
@@ -65,9 +67,8 @@ public struct SnapshottedElementPair {
 
     public init(pair: ElementPair) {
         self.pair = pair
-
-        print(pair.fromView)
-        imageView = UIImageView(image: pair.fromView.snapshot())
+        imageView = UIImageView(image: pair.snapshot)
+        imageView.contentMode = .scaleAspectFit
         imageView.frame = pair.fromView.frameInSuperview
     }
 }
@@ -95,7 +96,6 @@ extension Collection where Element == SnapshottedElementPair {
             case .forward:
                 let imageScaleTransform = $0.pair.finalView.frameInSuperview
                     .scaleTransform(to: $0.pair.fromView.frameInSuperview)
-                print(imageScaleTransform)
                 $0.imageView.transform = imageScaleTransform
                 $0.imageView.center = $0.pair.finalView.frameInSuperview.center
             case .backward:

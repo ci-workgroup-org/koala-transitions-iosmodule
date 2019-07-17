@@ -22,14 +22,14 @@ extension UIView {
         defer { UIGraphicsEndImageContext() }
 
         guard let context = UIGraphicsGetCurrentContext() else {
-            print("No context to render image.")
+            timeStampedPrint("No context to render image.")
             return UIImage()
         }
 
         layer.render(in: context)
 
         guard let image = UIGraphicsGetImageFromCurrentImageContext() else {
-            print("Failed to render image from current context.")
+            timeStampedPrint("Failed to render image from current context.")
             return UIImage()
         }
 

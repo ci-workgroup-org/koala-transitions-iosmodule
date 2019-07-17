@@ -7,6 +7,17 @@
 
 import UIKit
 
+internal func timeStampedPrint(_ object: Any? = nil, line: Int = #line, function: String = #function) {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "h:mm:ss.SSS"
+    let timeString = formatter.string(from: Date())
+    if let object = object {
+        print("[Transitioner][\(function):\(line)]@\(timeString): \(object)")
+    } else {
+        print("[Transitioner][\(function):\(line)]@\(timeString): nil")
+    }
+}
+
 public class MatchedElementsAnimator: NSObject, Animator {
     public let duration: Double
 
@@ -48,6 +59,7 @@ public class MatchedElementsAnimator: NSObject, Animator {
             containerView.addSubview(toView)
 
             if elementPairs.hasZeroFramedViews() {
+                timeStampedPrint("a view had a zero frame")
                 toView.setNeedsLayout()
                 toView.setNeedsUpdateConstraints()
                 toView.layoutIfNeeded()
@@ -116,7 +128,6 @@ public class MatchedElementsAnimator: NSObject, Animator {
                 },
                 completion: { _ in
                     animatableViews.removeSnapshotViews()
-
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
