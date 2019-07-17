@@ -18,6 +18,9 @@ extension ExpandingExample {
         let bottomLeftButton = UIButton()
         let bottomRightButton = UIButton()
         var transitioner: Transitioner?
+
+        var preloadElements = [ElementInterface]()
+
         override func viewDidLoad() {
             super.viewDidLoad()
             view.backgroundColor = .lightGray
@@ -64,6 +67,13 @@ extension ExpandingExample {
             bottomRightButton.addTarget(self, action: #selector(pressedImage), for: .touchUpInside)
         }
 
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            let fromView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .topView, snapshot: bottomLeftButton.snapshot())
+            let leftView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .leftView)
+            preloadElements = [fromView, leftView]
+        }
+
         @objc func pressed(_ button: UIControl) {
             let nextVC = DetailsViewController()
             nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview, duration: 0.3))
@@ -82,10 +92,7 @@ extension ExpandingExample {
         @objc func pressedMatchedImage(_ button: UIControl) {
             let nextVC = DetailsViewController()
 
-            let fromView = Element<DetailsAnimatableElements>(view: button, use: .topView)
-            let leftView = Element<DetailsAnimatableElements>(view: button, use: .leftView)
-
-            let elementAnimations = [fromView, leftView].matchPairs(nextVC.elements())
+            let elementAnimations = preloadElements.matchPairs(nextVC.elements())
 
             let transitioner = Transitioner(animator: MatchedElementsAnimator(button.frameInSuperview, elementPairs: elementAnimations))
             nextVC.setTransitioner(transitioner)

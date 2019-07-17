@@ -1,7 +1,7 @@
 --allman false
 --binarygrouping none
 --closingparen balanced
---commas always
+--commas inline
 --comments ignore
 --decimalgrouping none
 --elseposition same-line
@@ -23,7 +23,10 @@
 --ranges spaced
 --self remove
 --semicolons inline
---stripunusedargs always
+--stripunusedargs closure-only
 --trimwhitespace always
 --wraparguments beforefirst
 --wrapcollections beforefirst
+--disable blankLinesAroundMark
+--disable redundantInit
+--exclude Pods

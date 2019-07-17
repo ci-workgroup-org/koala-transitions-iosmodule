@@ -16,10 +16,10 @@ extension ExpandingExample {
     }
 
     class DetailsViewController: UIViewController, CustomTransitionable, ElementMatching {
-        func elements() -> [ElementInterface] {
+        func elementsForAnimtion() -> [ElementInterface] {
             let views: [ElementInterface] = [
                 Element<DetailsAnimatableElements>(view: topView, use: .topView),
-                Element<DetailsAnimatableElements>(view: bottomLeftView, use: .leftView),
+                Element<DetailsAnimatableElements>(view: bottomLeftView, use: .leftView)
             ]
             return views
         }
@@ -27,7 +27,7 @@ extension ExpandingExample {
         var transitioner: Transitioner?
 
         let topView = UIImageView(image: UIImage(named: "image"))
-        let bottomLeftView = UIView()
+        let bottomLeftView = UIImageView(image: UIImage(named: "image"))
         let bottomRightView = UIView()
 
         override func viewDidLoad() {
@@ -56,6 +56,8 @@ extension ExpandingExample {
                 make.trailing.bottom.equalToSuperview()
                 make.top.equalTo(bottomLeftView)
                 make.leading.equalTo(bottomLeftView.snp.trailing)
+                make.height.greaterThanOrEqualTo(250)
+                make.width.greaterThanOrEqualTo(150)
             }
         }
 
