@@ -13,11 +13,16 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
     public let originFrame: CGRect
     let maintainFinalAspect: Bool
     public var playDirection: AnimationDirection
-
     public var supportedPresentations = PresentaionType.all
 
-    public init(_ originFrame: CGRect = CGRect.zero, maintainFinalAspect: Bool = true, duration: Double = 0.40) {
-        self.originFrame = originFrame
+    /// Create an ExpandFromFrameAnimator to zoom the incoming viewController for a frame
+    ///
+    /// - Parameters:
+    ///   - initialFrame: frame to start the ainimation from
+    ///   - maintainFinalAspect: controls weather to scale the viewControllers' size to exactly match the initialFrame
+    ///   - duration: time for the animation to occur over
+    public init(_ initialFrame: CGRect = CGRect.zero, maintainFinalAspect: Bool = true, duration: Double = 0.40) {
+        originFrame = initialFrame
         playDirection = .forward
         self.duration = duration
         self.maintainFinalAspect = maintainFinalAspect

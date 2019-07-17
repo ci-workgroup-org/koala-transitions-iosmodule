@@ -20,6 +20,7 @@ extension ExpandingExample {
         var transitioner: Transitioner?
 
         var preloadElements = [ElementInterface]()
+        var rightButtonSnapshot: UIImage?
 
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -64,7 +65,7 @@ extension ExpandingExample {
                 make.height.width.equalTo(120)
             }
             bottomRightButton.setImage(UIImage(named: "image"), for: [])
-            bottomRightButton.addTarget(self, action: #selector(pressedImage), for: .touchUpInside)
+            bottomRightButton.addTarget(self, action: #selector(pressedBottomRightButton), for: .touchUpInside)
         }
 
         override func viewWillAppear(_ animated: Bool) {
@@ -72,6 +73,7 @@ extension ExpandingExample {
             let fromView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .topView, snapshot: bottomLeftButton.snapshot())
             let leftView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .leftView)
             preloadElements = [fromView, leftView]
+            rightButtonSnapshot = bottomRightButton.snapshot()
         }
 
         @objc func pressed(_ button: UIControl) {
@@ -81,10 +83,15 @@ extension ExpandingExample {
             present(nextVC, animated: true)
         }
 
-        @objc func pressedImage(_ button: UIControl) {
+        @objc func pressedBottomRightButton(_ button: UIControl) {
             let nextVC = DetailsViewController()
 
-            nextVC.setTransitioner(Transitioner(animator: MatchedViewExpandFromFrameAnimator(button.frameInSuperview, originView: button, finalView: nextVC.topView)))
+            nextVC.setTransitioner(Transitioner(animator: MatchedViewExpandFromFrameAnimator(
+                bottomRightButton.frameInSuperview,
+                originView: bottomRightButton,
+                originSnapshot: rightButtonSnapshot,
+                finalView: nextVC.topView
+            )))
 
             present(nextVC, animated: true)
         }

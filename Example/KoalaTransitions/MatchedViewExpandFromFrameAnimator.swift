@@ -18,12 +18,12 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     public var playDirection: AnimationDirection
     public var supportedPresentations = PresentaionType.all
 
-    public init(_ originFrame: CGRect = CGRect.zero, originView: UIView, finalView: UIView, duration: Double = 0.40) {
+    public init(_ originFrame: CGRect = CGRect.zero, originView: UIView, originSnapshot: UIImage? = nil, finalView: UIView, duration: Double = 0.40) {
         self.originFrame = originFrame
         self.finalView = finalView
         self.originView = originView
 
-        originImageView = UIImageView(image: originView.snapshot())
+        originImageView = UIImageView(image: originSnapshot ?? originView.snapshot())
         originImageView.contentMode = .scaleToFill
 
         self.duration = duration
