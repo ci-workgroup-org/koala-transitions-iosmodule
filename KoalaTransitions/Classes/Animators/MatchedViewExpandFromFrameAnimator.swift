@@ -11,19 +11,21 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     public let duration: Double
     public let originFrame: CGRect
     public let originImageView: UIImageView
-    public let originView: UIView
+    public let originView: UIView?
     public let finalView: UIView
 
     public var playDirection: AnimationDirection
     public var supportedPresentations = PresentaionType.all
 
-    public init(_ originFrame: CGRect = CGRect.zero, originView: UIView, finalView: UIView, duration: Double = 0.40) {
+    public init(_ originFrame: CGRect = CGRect.zero, originView: UIView? = nil, originSnapshot: UIImage? = nil, finalView: UIView, duration: Double = 0.40) {
         self.originFrame = originFrame
         self.finalView = finalView
         self.originView = originView
 
-        originImageView = UIImageView(image: originView.snapshot())
+        originImageView = UIImageView(image: originSnapshot ?? originView?.snapshot())
         originImageView.contentMode = .scaleToFill
+
+        originImageView.frame = originFrame
 
         self.duration = duration
         playDirection = .forward
@@ -53,8 +55,8 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
         switch playDirection {
         case .forward:
 
-            originView.alpha = 0
-            originView.isHidden = true
+            originView?.alpha = 0
+            originView?.isHidden = true
 
             initialFrame = originFrame
             finalFrame = toView.frame
@@ -93,17 +95,18 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 },
                 completion: { _ in
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-                    /// reset the original view
-                    self.originView.alpha = 1
-                    self.originView.isHidden = false
                 }
             )
 
+            originView?.isHidden = false
+            originView?.alpha = 0
             UIView.animate(
                 withDuration: duration * 0.4, delay: duration * 0.6,
                 animations: {
                     self.originImageView.alpha = 0.0
                     toView.alpha = 1.0
+                    /// reset the original view
+                    self.originView?.alpha = 1
                 },
                 completion: { _ in self.originImageView.removeFromSuperview() }
             )

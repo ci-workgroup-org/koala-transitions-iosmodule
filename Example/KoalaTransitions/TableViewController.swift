@@ -37,7 +37,7 @@ class TableViewController: UIViewController, CustomTransitionable, UITableViewDe
         }
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(Cell.self, forCellReuseIdentifier: "cell")
     }
 
     func numberOfSections(in _: UITableView) -> Int {

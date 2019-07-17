@@ -20,7 +20,6 @@
 		F923799B228B2ED200446586 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F923799A228B2ED200446586 /* FirstViewController.swift */; };
 		F92379A1228B51D300446586 /* RandomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A0228B51D300446586 /* RandomViewController.swift */; };
 		F92379A3228C6D9200446586 /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A2228C6D9200446586 /* Label.swift */; };
-		F92379A5228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A4228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift */; };
 		F92379A7228EEE3400446586 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F92379A6228EEE3400446586 /* TableViewController.swift */; };
 		F9B7F25522DE616400275E8A /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = F9B7F25422DE616400275E8A /* .swiftformat */; };
 		F9D723FF2293577F008839C3 /* ExpandingExample.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9D723FE2293577F008839C3 /* ExpandingExample.swift */; };
@@ -61,7 +60,6 @@
 		F923799A228B2ED200446586 /* FirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
 		F92379A0228B51D300446586 /* RandomViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RandomViewController.swift; sourceTree = "<group>"; };
 		F92379A2228C6D9200446586 /* Label.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Label.swift; sourceTree = "<group>"; };
-		F92379A4228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchedViewExpandFromFrameAnimator.swift; sourceTree = "<group>"; };
 		F92379A6228EEE3400446586 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		F9B7F25422DE616400275E8A /* .swiftformat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		F9D723FE2293577F008839C3 /* ExpandingExample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpandingExample.swift; sourceTree = "<group>"; };
@@ -115,7 +113,6 @@
 			isa = PBXGroup;
 			children = (
 				F9D723FD22935731008839C3 /* ExpandingExample */,
-				F92379A4228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift */,
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				696A7E97228A5F1500DD18B7 /* DetailsViewController.swift */,
 				607FACD71AFB9204008FA782 /* ViewController.swift */,
@@ -493,7 +490,6 @@
 				696A7E96228A5E1600DD18B7 /* ExpandingExampleMainController.swift in Sources */,
 				F9D723FF2293577F008839C3 /* ExpandingExample.swift in Sources */,
 				F92379A3228C6D9200446586 /* Label.swift in Sources */,
-				F92379A5228DB42600446586 /* MatchedViewExpandFromFrameAnimator.swift in Sources */,
 				F92379A7228EEE3400446586 /* TableViewController.swift in Sources */,
 				696A7E98228A5F1500DD18B7 /* DetailsViewController.swift in Sources */,
 			);
