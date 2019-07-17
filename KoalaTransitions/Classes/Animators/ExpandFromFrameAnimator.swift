@@ -11,14 +11,16 @@ import UIKit
 public class ExpandFromFrameAnimator: NSObject, Animator {
     public let duration: Double
     public let originFrame: CGRect
+    let maintainFinalAspect: Bool
     public var playDirection: AnimationDirection
 
     public var supportedPresentations = PresentaionType.all
 
-    public init(_ originFrame: CGRect = CGRect.zero, duration: Double = 0.40) {
+    public init(_ originFrame: CGRect = CGRect.zero, maintainFinalAspect: Bool = true, duration: Double = 0.40) {
         self.originFrame = originFrame
         playDirection = .forward
         self.duration = duration
+        self.maintainFinalAspect = maintainFinalAspect
     }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -41,29 +43,21 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
             initialFrame = originFrame
             finalFrame = toView.frame
 
-            let xScaleFactor = initialFrame.width / finalFrame.width
-            let yScaleFactor = initialFrame.height / finalFrame.height
-            scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+            if maintainFinalAspect {
+                let xScaleFactor = initialFrame.width / finalFrame.width
+                let yScaleFactor = initialFrame.height / finalFrame.height
+                scaleTransform = CGAffineTransform(scaleX: min(xScaleFactor, yScaleFactor), y: min(xScaleFactor, yScaleFactor))
+            } else {
+                let xScaleFactor = initialFrame.width / finalFrame.width
+                let yScaleFactor = initialFrame.height / finalFrame.height
+                scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+            }
 
             toView.transform = scaleTransform
             toView.center = CGPoint(x: initialFrame.midX, y: initialFrame.midY)
             toView.clipsToBounds = true
             containerView.addSubview(toView)
 
-        case .backward:
-            initialFrame = fromView.frame
-            finalFrame = originFrame
-
-            let xScaleFactor = finalFrame.width / initialFrame.width
-            let yScaleFactor = finalFrame.height / initialFrame.height
-            scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
-
-            containerView.addSubview(toView)
-            containerView.addSubview(fromView)
-        }
-
-        switch playDirection {
-        case .forward:
             UIView.animate(
                 withDuration: duration,
                 animations: {
@@ -77,6 +71,22 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
             )
 
         case .backward:
+            initialFrame = fromView.frame
+            finalFrame = originFrame
+
+            if maintainFinalAspect {
+                let xScaleFactor = finalFrame.width / initialFrame.width
+                let yScaleFactor = finalFrame.height / initialFrame.height
+                scaleTransform = CGAffineTransform(scaleX: min(xScaleFactor, yScaleFactor), y: min(xScaleFactor, yScaleFactor))
+            } else {
+                let xScaleFactor = finalFrame.width / initialFrame.width
+                let yScaleFactor = finalFrame.height / initialFrame.height
+                scaleTransform = CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
+            }
+
+            containerView.addSubview(toView)
+            containerView.addSubview(fromView)
+
             UIView.animate(
                 withDuration: duration * 0.9,
                 animations: {
