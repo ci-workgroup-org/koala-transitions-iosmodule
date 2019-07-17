@@ -92,7 +92,7 @@ extension ExpandingExample {
         @objc func pressedMatchedImage(_ button: UIControl) {
             let nextVC = DetailsViewController()
 
-            let elementAnimations = preloadElements.matchPairs(nextVC.elements())
+            let elementAnimations = preloadElements.matchPairs(nextVC.elementsForAnimtion())
 
             let transitioner = Transitioner(animator: MatchedElementsAnimator(button.frameInSuperview, elementPairs: elementAnimations))
             nextVC.setTransitioner(transitioner)
