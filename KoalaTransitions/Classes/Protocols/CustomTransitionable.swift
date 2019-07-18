@@ -16,12 +16,18 @@ public protocol CustomTransitionable: UIViewController {
 }
 
 extension CustomTransitionable {
+    /// Set the transitioner property and transitioningDelegate property of the viewController
+    ///
+    /// - Parameter transitioner: Transitioner to use for this viewController's
     public func setTransitioner(_ transitioner: Transitioner?) {
         self.transitioner = transitioner
         transitioningDelegate = transitioner
+        if let navController = self as? UINavigationController {
+            navController.delegate = transitioner
+        }
     }
 
-    public func setTransitioningDelegateToTransitioner() {
+    func setTransitioningDelegateToTransitioner() {
         transitioningDelegate = transitioner
         if let navController = self as? UINavigationController {
             navController.delegate = transitioner
@@ -37,7 +43,7 @@ extension CustomTransitionable {
 extension UIViewController {
     public func present(_ viewControllerToPresent: UIViewController & CustomTransitionable, transition transitioner: Transitioner, completion: (() -> Void)? = nil) throws {
         transitioner.playDirection = .forward
-        viewControllerToPresent.transitioner = transitioner
+        viewControllerToPresent.setTransitioner(transitioner)
         viewControllerToPresent.setTransitioningDelegateToTransitioner()
         present(viewControllerToPresent, animated: true, completion: {
             completion?()

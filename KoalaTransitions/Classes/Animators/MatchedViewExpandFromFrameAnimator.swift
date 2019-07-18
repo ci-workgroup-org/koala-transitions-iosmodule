@@ -17,7 +17,13 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     public var playDirection: AnimationDirection
     public var supportedPresentations = PresentaionType.all
 
-    public init(_ originFrame: CGRect = CGRect.zero, originView: UIView? = nil, originSnapshot: UIImage? = nil, finalView: UIView, duration: Double = 0.40) {
+    public init(
+        _ originFrame: CGRect = CGRect.zero,
+        originView: UIView? = nil,
+        originSnapshot: UIImage? = nil,
+        finalView: UIView,
+        duration: Double = 0.40
+    ) {
         self.originFrame = originFrame
         self.finalView = finalView
         self.originView = originView
@@ -29,6 +35,10 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
 
         self.duration = duration
         playDirection = .forward
+    }
+
+    deinit {
+        self.originView?.alpha = 1
     }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -105,8 +115,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 animations: {
                     self.originImageView.alpha = 0.0
                     toView.alpha = 1.0
-                    /// reset the original view
-                    self.originView?.alpha = 1
+
                 },
                 completion: { _ in self.originImageView.removeFromSuperview() }
             )
@@ -138,6 +147,8 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 animations: {
                     self.originImageView.alpha = 1.0
                     fromView.alpha = 0.0
+                    /// reset the original view
+                    self.originView?.alpha = 1
                 }
             )
 

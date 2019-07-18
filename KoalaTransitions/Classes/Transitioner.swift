@@ -1,10 +1,11 @@
 //
-import Foundation
 //  Transitioner.swift
 //  KoalaTransitions
 //
 //  Created by boulder on 5/13/19.
 //
+
+import Foundation
 import UIKit
 
 /// Tranisioner holds reference to the animator, and can be set as
@@ -59,7 +60,12 @@ public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
 // MARK: - `UINavigationControllerDelegate` -
 
 extension Transitioner: UINavigationControllerDelegate {
-    public func navigationController(_: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from _: UIViewController, to _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    public func navigationController(
+        _: UINavigationController,
+        animationControllerFor operation: UINavigationController.Operation,
+        from _: UIViewController,
+        to _: UIViewController
+    ) -> UIViewControllerAnimatedTransitioning? {
         if animator.supportedPresentations.contains(.push), operation == .push {
             playDirection = .forward
             return animator

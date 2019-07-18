@@ -78,8 +78,8 @@ extension ExpandingExample {
 
         @objc func pressed(_ button: UIControl) {
             let nextVC = DetailsViewController()
-            nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview, duration: 0.3))
-            nextVC.setTransitioningDelegateToTransitioner()
+            let transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview, duration: 0.3))
+            nextVC.setTransitioner(transitioner)
             present(nextVC, animated: true)
         }
 

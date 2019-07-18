@@ -27,8 +27,9 @@ extension ExpandingExample {
         var transitioner: Transitioner?
 
         let topView = UIImageView(image: UIImage(named: "image"))
-        let bottomLeftView = UIImageView(image: UIImage(named: "image"))
+        let bottomLeftView = UIView() // UIImageView(image: UIImage(named: "image"))
         let bottomRightView = UIView()
+        let text = Label()
 
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -41,6 +42,8 @@ extension ExpandingExample {
             bottomLeftView.backgroundColor = .red
             view.addSubview(bottomRightView)
             bottomRightView.backgroundColor = .orange
+
+            view.addSubview(text)
 
             topView.contentMode = .scaleToFill
             topView.snp.makeConstraints { make in
@@ -59,6 +62,16 @@ extension ExpandingExample {
                 make.height.greaterThanOrEqualTo(250)
                 make.width.greaterThanOrEqualTo(150)
             }
+
+            text.snp.makeConstraints { make in
+                make.trailing.leading.bottom.equalToSuperview().inset(50)
+                make.top.equalTo(topView.snp.bottom).offset(30)
+            }
+            text.text = """
+                        Many times, readers will get distracted by readable text when looking at the layout of a page. Instead of using filler text that says “Insert content here,” Lorem Ipsum uses a normal distribution of letters, making it resemble standard English.
+                        
+                        This makes it easier for designers to focus on visual elements, as opposed to what the text on a page actually says.
+            """
         }
 
         @objc func actionClose(_: UITapGestureRecognizer) {

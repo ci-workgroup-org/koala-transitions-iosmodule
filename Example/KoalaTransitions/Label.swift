@@ -12,8 +12,8 @@ import UIKit
 class Label: UILabel {
     init() {
         super.init(frame: CGRect.zero)
-        font = UIFont.systemFont(ofSize: 20)
-        numberOfLines = 3
+        font = UIFont.systemFont(ofSize: 23)
+        numberOfLines = 0
         textAlignment = .center
     }
 

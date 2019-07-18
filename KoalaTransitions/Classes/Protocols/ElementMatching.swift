@@ -62,8 +62,8 @@ public struct ElementPair {
 }
 
 public struct SnapshottedElementPair {
-    let pair: ElementPair
-    let imageView: UIImageView
+    public let pair: ElementPair
+    public let imageView: UIImageView
 
     public init(pair: ElementPair) {
         self.pair = pair
@@ -74,15 +74,15 @@ public struct SnapshottedElementPair {
 }
 
 extension Collection where Element == ElementPair {
-    public func hideOriginViews() {
+    func hideOriginViews() {
         forEach { $0.fromView.alpha = 0 }
     }
 
-    public func showOriginViews() {
+    func showOriginViews() {
         forEach { $0.fromView.alpha = 1 }
     }
 
-    public func hasZeroFramedViews() -> Bool {
+    func hasZeroFramedViews() -> Bool {
         return reduce(false) { (current, view) -> Bool in
             current || view.finalView.frame == CGRect.zero
         }
@@ -90,7 +90,7 @@ extension Collection where Element == ElementPair {
 }
 
 extension Collection where Element == SnapshottedElementPair {
-    public func animateFrame(direction: AnimationDirection) {
+    func animateFrame(direction: AnimationDirection) {
         forEach {
             switch direction {
             case .forward:
@@ -107,7 +107,7 @@ extension Collection where Element == SnapshottedElementPair {
         }
     }
 
-    public func animateOpacity(direction: AnimationDirection) {
+    func animateOpacity(direction: AnimationDirection) {
         forEach {
             switch direction {
             case .forward:
@@ -118,7 +118,7 @@ extension Collection where Element == SnapshottedElementPair {
         }
     }
 
-    public func removeSnapshotViews() {
+    func removeSnapshotViews() {
         forEach { $0.imageView.removeFromSuperview() }
     }
 }
@@ -142,7 +142,7 @@ extension Array where Element == ElementInterface {
 }
 
 extension Array {
-    public func zip<T>(_ otherArray: [Element], combiner: (Element, Element) -> T) -> [T] {
+    func zip<T>(_ otherArray: [Element], combiner: (Element, Element) -> T) -> [T] {
         guard count <= otherArray.count else {
             return []
         }

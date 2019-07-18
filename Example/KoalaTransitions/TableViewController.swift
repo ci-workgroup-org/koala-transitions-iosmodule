@@ -61,10 +61,20 @@ class TableViewController: UIViewController, CustomTransitionable, UITableViewDe
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let cell = tableView.cellForRow(at: indexPath), let imageView = cell.imageView {
-            let nextVC = DetailsViewController()
-            nextVC.transitioner = Transitioner(animator: ExpandFromFrameAnimator(cell.frameInSuperview))
-            nextVC.setTransitioningDelegateToTransitioner()
-            present(nextVC, animated: true)
+            if indexPath.row.isMultiple(of: 2) {
+                let nextVC = ExpandingExample.DetailsViewController()
+                let transitioner = Transitioner(animator: ExpandFromFrameAnimator(imageView.frameInSuperview))
+                nextVC.setTransitioner(transitioner)
+                present(nextVC, animated: true)
+            } else {
+                let nextVC = ExpandingExample.DetailsViewController()
+                nextVC.setTransitioner(Transitioner(animator: MatchedViewExpandFromFrameAnimator(
+                    imageView.frameInSuperview,
+                    originView: imageView,
+                    finalView: nextVC.topView
+                )))
+                present(nextVC, animated: true)
+            }
         }
     }
 }
