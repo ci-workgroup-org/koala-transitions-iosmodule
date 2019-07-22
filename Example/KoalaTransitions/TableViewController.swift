@@ -71,6 +71,7 @@ class TableViewController: UIViewController, CustomTransitionable, UITableViewDe
                 nextVC.setTransitioner(Transitioner(animator: MatchedViewExpandFromFrameAnimator(
                     imageView.frameInSuperview,
                     originView: imageView,
+                    originSnapshot: nextVC.topView.snapshot(),
                     finalView: nextVC.topView
                 )))
                 present(nextVC, animated: true)

@@ -68,17 +68,22 @@ extension ExpandingExample {
             bottomRightButton.addTarget(self, action: #selector(pressedBottomRightButton), for: .touchUpInside)
         }
 
-        override func viewWillAppear(_ animated: Bool) {
-            super.viewWillAppear(animated)
-            let fromView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .topView, snapshot: bottomLeftButton.snapshot())
-            let leftView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .leftView)
-            preloadElements = [fromView, leftView]
-            rightButtonSnapshot = bottomRightButton.snapshot()
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+
+            if rightButtonSnapshot == nil {
+                rightButtonSnapshot = bottomRightButton.snapshot()
+            }
+            if preloadElements.isEmpty {
+                let fromView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .topView, snapshot: bottomLeftButton.snapshot())
+                let leftView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .leftView)
+                preloadElements = [fromView, leftView]
+            }
         }
 
         @objc func pressed(_ button: UIControl) {
             let nextVC = DetailsViewController()
-            let transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview, duration: 0.3))
+            let transitioner = Transitioner(animator: ExpandFromFrameAnimator(button.frameInSuperview.squared(), duration: 0.5))
             nextVC.setTransitioner(transitioner)
             present(nextVC, animated: true)
         }
@@ -90,7 +95,8 @@ extension ExpandingExample {
                 bottomRightButton.frameInSuperview,
                 originView: bottomRightButton,
                 originSnapshot: rightButtonSnapshot,
-                finalView: nextVC.topView
+                finalView: nextVC.topView,
+                duration: 0.8
             )))
 
             present(nextVC, animated: true)
@@ -101,7 +107,13 @@ extension ExpandingExample {
 
             let elementAnimations = preloadElements.matchPairs(nextVC.elementsForAnimtion())
 
-            let transitioner = Transitioner(animator: MatchedElementsAnimator(button.frameInSuperview, elementPairs: elementAnimations))
+            let transitioner = Transitioner(
+                animator: MatchedElementsAnimator(
+                    bottomLeftButton.frameInSuperview,
+                    elementPairs: elementAnimations,
+                    duration: 0.8
+                )
+            )
             nextVC.setTransitioner(transitioner)
             present(nextVC, animated: true)
         }

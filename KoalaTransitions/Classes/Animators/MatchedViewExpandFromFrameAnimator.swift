@@ -17,6 +17,14 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     public var playDirection: AnimationDirection
     public var supportedPresentations = PresentaionType.all
 
+    /// Create an MatchedViewExpandFromFrameAnimator to zoom the incoming viewController for a view, creates a snapshot of the originView to animate
+    ///
+    /// - Parameters:
+    ///   - originFrame: frame to start the ainimation from
+    ///   - originView: optional origin view
+    ///   - originSnapshot: UIImage
+    ///   - finalView: UIImage
+    ///   - duration: time for the animation to occur over
     public init(
         _ originFrame: CGRect = CGRect.zero,
         originView: UIView? = nil,
@@ -38,17 +46,12 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     }
 
     deinit {
+        timeStampedPrint()
         self.originView?.alpha = 1
     }
 
     public func transitionDuration(using _: UIViewControllerContextTransitioning?) -> TimeInterval {
         return duration
-    }
-
-    func scaleTransform(from: CGRect, to: CGRect) -> CGAffineTransform {
-        let xScaleFactor = from.width / to.width
-        let yScaleFactor = from.height / to.height
-        return CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
     }
 
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -66,7 +69,6 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
         case .forward:
 
             originView?.alpha = 0
-            originView?.isHidden = true
 
             initialFrame = originFrame
             finalFrame = toView.frame
@@ -83,7 +85,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 finalViewFrame = finalFrame
             }
 
-            scalingTransform = scaleTransform(from: initialFrame, to: finalFrame)
+            scalingTransform = initialFrame.scaleTransform(to: finalFrame)
             toView.transform = scalingTransform
             toView.center = initialFrame.center
             toView.clipsToBounds = true
@@ -108,7 +110,6 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 }
             )
 
-            originView?.isHidden = false
             originView?.alpha = 0
             UIView.animate(
                 withDuration: duration * 0.4, delay: duration * 0.6,
@@ -136,7 +137,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 finalViewFrame = finalFrame
             }
 
-            let imageScaleTransform = scaleTransform(from: finalViewFrame, to: originFrame)
+            let imageScaleTransform = finalViewFrame.scaleTransform(to: originFrame)
             originImageView.transform = imageScaleTransform
             originImageView.center = finalViewFrame.center
             containerView.addSubview(originImageView)
@@ -147,8 +148,6 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 animations: {
                     self.originImageView.alpha = 1.0
                     fromView.alpha = 0.0
-                    /// reset the original view
-                    self.originView?.alpha = 1
                 }
             )
 
@@ -164,6 +163,8 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 },
                 completion: { _ in
                     self.originImageView.removeFromSuperview()
+                    /// reset the original view
+                    self.originView?.alpha = 1
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )

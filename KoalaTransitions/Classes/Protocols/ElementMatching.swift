@@ -69,17 +69,34 @@ public struct SnapshottedElementPair {
         self.pair = pair
         imageView = UIImageView(image: pair.snapshot)
         imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         imageView.frame = pair.fromView.frameInSuperview
     }
 }
 
 extension Collection where Element == ElementPair {
-    func hideOriginViews() {
-        forEach { $0.fromView.alpha = 0 }
+    func hideOriginViews(_ duration: Double = 0.3) {
+        forEach { pair in
+            timeStampedPrint(pair.fromView)
+            UIView.animate(
+                withDuration: duration,
+                animations: {
+                    pair.fromView.alpha = 0
+                }
+            )
+        }
     }
 
-    func showOriginViews() {
-        forEach { $0.fromView.alpha = 1 }
+    func showOriginViews(_ duration: Double = 0.3) {
+        forEach { pair in
+            timeStampedPrint(pair.fromView)
+            UIView.animate(
+                withDuration: duration,
+                animations: {
+                    pair.fromView.alpha = 1
+                }
+            )
+        }
     }
 
     func hasZeroFramedViews() -> Bool {

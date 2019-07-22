@@ -12,9 +12,9 @@ internal func timeStampedPrint(_ object: Any? = nil, line: Int = #line, function
     formatter.dateFormat = "h:mm:ss.SSS"
     let timeString = formatter.string(from: Date())
     if let object = object {
-        print("[Transitioner][\(function):\(line)]@\(timeString): \(object)")
+        print("@\(timeString)[Transitioner][\(function):\(line)]: \(object)")
     } else {
-        print("[Transitioner][\(function):\(line)]@\(timeString): nil")
+        print("@\(timeString)[Transitioner][\(function):\(line)]: nil")
     }
 }
 
@@ -27,6 +27,12 @@ public class MatchedElementsAnimator: NSObject, Animator {
     public var elementPairs: [ElementPair]
     public let originFrame: CGRect
 
+    ///  MatchedElementsAnimator,
+    ///
+    /// - Parameters:
+    ///   - originFrame: frame to zoom in from
+    ///   - elementPairs: an array of ElementPairs that match a origin view to  a final view for the animation
+    ///   - duration: time for the animation to occur over
     public init(_ originFrame: CGRect = CGRect.zero, elementPairs: [ElementPair], duration: Double = 0.40) {
         self.elementPairs = elementPairs
         self.duration = duration
@@ -46,6 +52,12 @@ public class MatchedElementsAnimator: NSObject, Animator {
 
         switch playDirection {
         case .forward:
+
+            // hide original animating views
+            elementPairs.forEach { pair in
+                timeStampedPrint(pair)
+                pair.fromView.alpha = 0
+            }
 
             let underImageView = UIImageView(image: fromView.snapshot())
             containerView.addSubview(underImageView)
@@ -69,9 +81,6 @@ public class MatchedElementsAnimator: NSObject, Animator {
             let animatableViews = elementPairs.map { SnapshottedElementPair(pair: $0) }
             animatableViews.forEach { containerView.addSubview($0.imageView) }
 
-            // hide original animating views
-            elementPairs.hideOriginViews()
-
             UIView.animate(
                 withDuration: duration,
                 animations: {
@@ -81,16 +90,14 @@ public class MatchedElementsAnimator: NSObject, Animator {
                     animatableViews.animateFrame(direction: self.playDirection)
                 },
                 completion: { _ in
-                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-                    /// reset the original view
-                    self.elementPairs.showOriginViews()
                     animatableViews.removeSnapshotViews()
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                    underImageView.removeFromSuperview()
                 }
             )
 
             UIView.animate(
-                withDuration: duration * 0.4, delay: duration * 0.6,
+                withDuration: duration * 0.4, delay: duration * 0.4,
                 animations: {
                     toView.alpha = 1.0
                     animatableViews.animateOpacity(direction: self.playDirection)
@@ -98,24 +105,26 @@ public class MatchedElementsAnimator: NSObject, Animator {
             )
 
         case .backward:
-            let scalingTransform: CGAffineTransform
             let finalFrame = originFrame
-
-            scalingTransform = finalFrame.scaleTransform(to: fromView.frame)
+            let scalingTransform = finalFrame.scaleTransform(to: fromView.frame)
 
             containerView.addSubview(toView)
             containerView.addSubview(fromView)
 
-            let animatableViews = elementPairs.map { SnapshottedElementPair(pair: $0) }
-            animatableViews.forEach { containerView.addSubview($0.imageView) }
+            // let animatableViews = elementPairs.map { SnapshottedElementPair(pair: $0) }
+            // animatableViews.forEach { containerView.addSubview($0.imageView) }
 
             let dismissDuration = duration * 0.75
+            elementPairs.showOriginViews(duration)
             UIView.animate(
-                withDuration: dismissDuration * 0.6,
+                withDuration: dismissDuration * 0.4,
+                delay: dismissDuration * 0.4,
                 animations: {
                     fromView.alpha = 0.0
-                    self.elementPairs.showOriginViews()
-                    animatableViews.animateOpacity(direction: self.playDirection)
+                    // animatableViews.animateOpacity(direction: self.playDirection)
+
+                },
+                completion: { _ in
                 }
             )
 
@@ -127,7 +136,7 @@ public class MatchedElementsAnimator: NSObject, Animator {
 
                 },
                 completion: { _ in
-                    animatableViews.removeSnapshotViews()
+                    // animatableViews.removeSnapshotViews()
                     transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )

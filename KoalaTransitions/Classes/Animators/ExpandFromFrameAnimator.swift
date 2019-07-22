@@ -63,6 +63,14 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
             toView.clipsToBounds = true
             containerView.addSubview(toView)
 
+            toView.alpha = 0
+            UIView.animate(
+                withDuration: duration * 0.1,
+                animations: {
+                    toView.alpha = 1
+                }
+            )
+
             UIView.animate(
                 withDuration: duration,
                 animations: {
