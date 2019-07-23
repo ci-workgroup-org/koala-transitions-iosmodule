@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'KoalaTransitions'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = 'Provide Controller to Controller tansitions'
   s.description      = <<-DESC
 
