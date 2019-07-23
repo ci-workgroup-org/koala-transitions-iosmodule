@@ -58,7 +58,8 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
         let containerView = transitionContext.containerView
 
         guard let toView = transitionContext.view(forKey: .to),
-            let fromView = transitionContext.view(forKey: .from)
+            let fromView = transitionContext.view(forKey: .from),
+            let toViewController = transitionContext.viewController(forKey: .to)
         else { return }
 
         let initialFrame: CGRect
@@ -79,7 +80,12 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
             underImageView.frame = fromView.frame
 
             let finalViewFrame: CGRect
-            if let view = toView.subviews.first(where: { $0 == self.finalView }) {
+            if let toViewController = toViewController as? UINavigationController,
+                let firstViewController = toViewController.viewControllers.first,
+                let view = firstViewController.view.subviews.first(where: { $0 == self.finalView }) {
+                finalViewFrame = view.frameInSuperview
+
+            } else if let view = toView.subviews.flatMap({ $0.subviews }).flatMap({ $0.subviews }).first(where: { $0 == self.finalView }) {
                 finalViewFrame = view.frameInSuperview
             } else {
                 finalViewFrame = finalFrame

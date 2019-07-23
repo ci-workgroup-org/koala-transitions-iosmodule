@@ -76,8 +76,8 @@ extension ExpandingExample {
             }
             if preloadElements.isEmpty {
                 let fromView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .topView, snapshot: bottomLeftButton.snapshot())
-                let leftView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .leftView)
-                preloadElements = [fromView, leftView]
+                // let leftView = Element<DetailsAnimatableElements>(view: bottomLeftButton, use: .leftView)
+                preloadElements = [fromView] // , leftView]
             }
         }
 
@@ -90,8 +90,8 @@ extension ExpandingExample {
 
         @objc func pressedBottomRightButton(_ button: UIControl) {
             let nextVC = DetailsViewController()
-
-            nextVC.setTransitioner(Transitioner(animator: MatchedViewExpandFromFrameAnimator(
+            let navigationController = AnimatedNavigationController(rootViewController: nextVC)
+            navigationController.setTransitioner(Transitioner(animator: MatchedViewExpandFromFrameAnimator(
                 bottomRightButton.frameInSuperview,
                 originView: bottomRightButton,
                 originSnapshot: rightButtonSnapshot,
@@ -99,7 +99,7 @@ extension ExpandingExample {
                 duration: 0.8
             )))
 
-            present(nextVC, animated: true)
+            present(navigationController, animated: true)
         }
 
         @objc func pressedMatchedImage(_ button: UIControl) {
