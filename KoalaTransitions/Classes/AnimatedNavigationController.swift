@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+/// UINavigationController subclass that becomes it's provide a transitioner for
+/// custom transitions only for it's own presentation
+public class CustomTransitionableNavigationController: UINavigationController, CustomTransitionable {
+    public var transitioner: Transitioner?
+}
+
 /// UINavigationController subclass that becomes it's own delegate to provide
 /// custom transitions, Transitioner using a Transitioner to controller presentation
 public class AnimatedNavigationController: UINavigationController, CustomTransitionable {

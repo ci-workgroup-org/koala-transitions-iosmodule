@@ -44,10 +44,8 @@ class ViewController: UIViewController {
     @objc func pressed() {
         let transitioner = Transitioner(animator: SlideAnimator(direction: .fromRightToLeft))
         let nextVC = DetailsViewController()
-        let navC = UINavigationController(rootViewController: nextVC)
-        /// without this the transitioner would be immediately deinited
-        nextVC.transitioner = transitioner
-        navC.transitioningDelegate = transitioner
+        let navC = CustomTransitionableNavigationController(rootViewController: nextVC)
+        navC.setTransitioner(transitioner)
         present(navC, animated: true)
     }
 }
