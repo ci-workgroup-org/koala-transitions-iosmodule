@@ -46,7 +46,6 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     }
 
     deinit {
-        timeStampedPrint()
         self.originView?.alpha = 1
     }
 
@@ -78,6 +77,13 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
             let underImageView = UIImageView(image: fromView.snapshot())
             containerView.addSubview(underImageView)
             underImageView.frame = fromView.frame
+
+            if finalView.frame == .zero {
+                toView.setNeedsLayout()
+                toView.setNeedsUpdateConstraints()
+                toView.layoutIfNeeded()
+                toView.updateConstraintsIfNeeded()
+            }
 
             let finalViewFrame: CGRect
             if let toViewController = toViewController as? UINavigationController,

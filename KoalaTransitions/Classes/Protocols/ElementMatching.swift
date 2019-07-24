@@ -77,7 +77,6 @@ public struct SnapshottedElementPair {
 extension Collection where Element == ElementPair {
     func hideOriginViews(_ duration: Double = 0.3) {
         forEach { pair in
-            timeStampedPrint(pair.fromView)
             UIView.animate(
                 withDuration: duration,
                 animations: {
@@ -89,7 +88,6 @@ extension Collection where Element == ElementPair {
 
     func showOriginViews(_ duration: Double = 0.3) {
         forEach { pair in
-            timeStampedPrint(pair.fromView)
             UIView.animate(
                 withDuration: duration,
                 animations: {

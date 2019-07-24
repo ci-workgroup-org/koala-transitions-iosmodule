@@ -65,7 +65,7 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
 
             toView.alpha = 0
             UIView.animate(
-                withDuration: duration * 0.1,
+                withDuration: duration * 0.3,
                 animations: {
                     toView.alpha = 1
                 }
@@ -113,7 +113,7 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
             )
 
             UIView.animate(withDuration: duration * 0.6, delay: duration * 0.4, animations: {
-                fromView.alpha = 0.5
+                fromView.alpha = 0.0
             })
         }
     }
