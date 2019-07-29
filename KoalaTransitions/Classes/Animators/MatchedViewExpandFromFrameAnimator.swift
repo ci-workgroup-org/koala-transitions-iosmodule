@@ -124,13 +124,19 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
 
             originView?.alpha = 0
             UIView.animate(
-                withDuration: duration * 0.4, delay: duration * 0.6,
+                withDuration: duration * 0.3, delay: duration * 0.7,
                 animations: {
                     self.originImageView.alpha = 0.0
-                    toView.alpha = 1.0
+                })
 
+            UIView.animate(
+                withDuration: duration * 0.4, delay: duration * 0.6,
+                animations: {
+                    toView.alpha = 1.0
                 },
-                completion: { _ in self.originImageView.removeFromSuperview() }
+                completion: { _ in
+                    self.originImageView.removeFromSuperview()
+                }
             )
 
         case .backward:
