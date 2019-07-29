@@ -20,7 +20,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     /// Create an MatchedViewExpandFromFrameAnimator to zoom the incoming viewController for a view, creates a snapshot of the originView to animate
     ///
     /// - Parameters:
-    ///   - originFrame: frame to start the ainimation from
+    ///   - originFrame: frame to start the animation from
     ///   - originView: optional origin view
     ///   - originSnapshot: UIImage
     ///   - finalView: UIImage
@@ -91,7 +91,7 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 let view = firstViewController.view.subviews.first(where: { $0 == self.finalView }) {
                 finalViewFrame = view.frameInSuperview
 
-            } else if let view = toView.subviews.flatMap({ $0.subviews }).flatMap({ $0.subviews }).first(where: { $0 == self.finalView }) {
+            } else if let view = toView.subviews.first(where: { $0 == self.finalView }) {
                 finalViewFrame = view.frameInSuperview
             } else {
                 finalViewFrame = finalFrame
