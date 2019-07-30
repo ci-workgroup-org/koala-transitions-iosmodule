@@ -16,22 +16,22 @@ public class CustomTransitionableNavigationController: UINavigationController, C
 
 /// UINavigationController subclass that becomes it's own delegate to provide
 /// custom transitions, Transitioner using a Transitioner to controller presentation
-public class AnimatedNavigationController: UINavigationController, CustomTransitionable {
-    public var transitioner: Transitioner? {
+open class AnimatedNavigationController: UINavigationController, CustomTransitionable {
+    open var transitioner: Transitioner? {
         didSet {
             delegate = transitioner
         }
     }
-
+    
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-
+    
     public override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
     }
-
-    required init?(coder _: NSCoder) {
+    
+    public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
@@ -39,22 +39,27 @@ public class AnimatedNavigationController: UINavigationController, CustomTransit
 /// UINavigationController subclass that becomes it's own delegate to provide
 /// custom transitions, Transitions in and out are take from the view controller being
 /// pushed or popped
-public class MultiAnimatedNavigationController: UINavigationController, UINavigationControllerDelegate {
+open class MultiAnimatedNavigationController: UINavigationController, UINavigationControllerDelegate {
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         delegate = self
     }
-
+    
     public override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
         delegate = self
     }
-
-    required init?(coder _: NSCoder) {
+    
+    public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    public func navigationController(_: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from: UIViewController, to: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    
+    public func navigationController(
+        _: UINavigationController,
+        animationControllerFor operation: UINavigationController.Operation,
+        from: UIViewController,
+        to: UIViewController
+        ) -> UIViewControllerAnimatedTransitioning? {
         if operation == .push {
             if let transitioner = (to as? CustomTransitionable)?.transitioner {
                 transitioner.playDirection = .forward
@@ -66,7 +71,8 @@ public class MultiAnimatedNavigationController: UINavigationController, UINaviga
                 return transitioner.animator
             }
         }
-
+        
         return nil
     }
 }
+

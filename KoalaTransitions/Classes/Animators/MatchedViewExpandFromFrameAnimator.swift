@@ -127,7 +127,8 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                 withDuration: duration * 0.3, delay: duration * 0.7,
                 animations: {
                     self.originImageView.alpha = 0.0
-                })
+                }
+            )
 
             UIView.animate(
                 withDuration: duration * 0.4, delay: duration * 0.6,
