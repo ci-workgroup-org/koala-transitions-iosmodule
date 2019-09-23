@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 tag = ARGV[0]
-oldtag="0.0.10"
+oldtag="0.0.11"
 puts tag
 
 cmd = "sed -i '' -e 's/#{oldtag}/#{tag}/' *.podspec"

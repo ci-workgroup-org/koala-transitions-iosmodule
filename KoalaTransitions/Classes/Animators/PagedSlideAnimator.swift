@@ -20,7 +20,7 @@ open class PagedSlideAnimator: NSObject, Animator {
     /// adjusts the leaving view's movment speed, 1 is equal movement
     /// higher numbers slow the animation speed thus allowing the incoming
     /// controller to overlap
-    public var overTakeRatio: CGFloat = 1.15
+    public var dismissOverTakeRatio: CGFloat = 1.15
 
     open override var debugDescription: String {
         return "PagedSlideAnimator: \(playDirection)"
@@ -47,7 +47,7 @@ open class PagedSlideAnimator: NSObject, Animator {
                 withDuration: transitionDuration(using: context),
                 animations: {
                     toView.transform = CGAffineTransform(translationX: 0, y: 0)
-                    fromView.transform = CGAffineTransform(translationX: -fromView.width / self.overTakeRatio, y: 0)
+                    fromView.transform = CGAffineTransform(translationX: -fromView.width, y: 0)
                 },
                 completion: { _ in
                     fromView.transform = CGAffineTransform(translationX: 0, y: 0)
@@ -62,7 +62,7 @@ open class PagedSlideAnimator: NSObject, Animator {
             UIView.animate(
                 withDuration: transitionDuration(using: context),
                 animations: {
-                    fromView.transform = CGAffineTransform(translationX: fromView.width / self.overTakeRatio, y: 0)
+                    fromView.transform = CGAffineTransform(translationX: fromView.width / self.dismissOverTakeRatio, y: 0)
                     toView.transform = CGAffineTransform(translationX: 0, y: 0)
                 },
                 completion: { _ in
