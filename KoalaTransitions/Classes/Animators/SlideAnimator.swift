@@ -16,7 +16,8 @@ public enum SlideDirection {
     case fromBottomToTop
 }
 
-/// SlideAnimator does a mock push but from any of the 4 sides
+/// SlideAnimator does a mock push but from any of the 4 screen edges
+/// doesn't move the existing ViewController
 public class SlideAnimator: NSObject, Animator {
     public var animationComplete: ((AnimationDirection) -> Void)?
 

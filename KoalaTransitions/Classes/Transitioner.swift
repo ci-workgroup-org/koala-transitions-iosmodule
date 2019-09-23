@@ -11,11 +11,11 @@ import UIKit
 /// Tranisioner holds reference to the animator, and can be set as
 /// the `transitioningDelegate` on any UIViewController
 /// updates the 'playDirection' based on the presentation method called
-public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
+open class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
     public let animator: Animator
 
     /// foward the play direction to the backing animator
-    public var playDirection: AnimationDirection {
+    open var playDirection: AnimationDirection {
         get {
             return animator.playDirection
         }
@@ -24,7 +24,7 @@ public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
         }
     }
 
-    public override var debugDescription: String {
+    open override var debugDescription: String {
         return "[Transitioner] direction: \(playDirection) animator: \(animator.debugDescription ?? "")"
     }
 
@@ -33,8 +33,7 @@ public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
     }
 
     // MARK: - `UIViewControllerTransitioningDelegate` -
-
-    public func animationController(
+    open func animationController(
         forPresented _: UIViewController,
         presenting _: UIViewController,
         source _: UIViewController
@@ -47,7 +46,7 @@ public class Transitioner: NSObject, UIViewControllerTransitioningDelegate {
         }
     }
 
-    public func animationController(forDismissed _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    open func animationController(forDismissed _: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         if animator.supportedPresentations.contains(.dismiss) {
             playDirection = .backward
             return animator

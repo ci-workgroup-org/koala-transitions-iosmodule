@@ -22,15 +22,15 @@ open class AnimatedNavigationController: UINavigationController, CustomTransitio
             delegate = transitioner
         }
     }
-    
+
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+
     public override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
     }
-    
+
     public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -44,22 +44,22 @@ open class MultiAnimatedNavigationController: UINavigationController, UINavigati
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         delegate = self
     }
-    
+
     public override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController)
         delegate = self
     }
-    
+
     public required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     public func navigationController(
         _: UINavigationController,
         animationControllerFor operation: UINavigationController.Operation,
         from: UIViewController,
         to: UIViewController
-        ) -> UIViewControllerAnimatedTransitioning? {
+    ) -> UIViewControllerAnimatedTransitioning? {
         if operation == .push {
             if let transitioner = (to as? CustomTransitionable)?.transitioner {
                 transitioner.playDirection = .forward
@@ -71,8 +71,7 @@ open class MultiAnimatedNavigationController: UINavigationController, UINavigati
                 return transitioner.animator
             }
         }
-        
+
         return nil
     }
 }
-

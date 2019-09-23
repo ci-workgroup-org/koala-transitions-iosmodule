@@ -46,3 +46,10 @@ public protocol Animator: UIViewControllerAnimatedTransitioning {
     /// the Duration of this animation
     var duration: Double { get }
 }
+
+//
+// public protocol Animator
+//    func animateForward(toViewController: UIViewController, fromViewController: UIViewController, context: UIViewControllerContextTransitioning)
+//    func animateBackward(toViewController: UIViewController, fromViewController: UIViewController, context: UIViewControllerContextTransitioning)
+//
+// }

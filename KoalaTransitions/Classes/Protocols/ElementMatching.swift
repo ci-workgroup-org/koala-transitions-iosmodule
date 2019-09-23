@@ -24,7 +24,8 @@ public protocol ElementInterface {
 public protocol Matchable {}
 
 /// This struct is returned from the viewController to be presented
-/// then should be transitioned into a ViewPair
+/// then should be transformed into a ViewPair assocaiting a view from each viewController
+///
 public struct Element<Identifier: Equatable>: ElementInterface {
     public let view: UIView
     public let usage: Identifier

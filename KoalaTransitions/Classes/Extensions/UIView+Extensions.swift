@@ -13,6 +13,11 @@ extension UIView {
         return frame
     }
 
+    /// returns the receiver's width frame
+    public var width: CGFloat {
+        return frame.size.width
+    }
+
     /// Convert a UIView into a UIImage.
     ///
     /// - Returns: An image represented the view.

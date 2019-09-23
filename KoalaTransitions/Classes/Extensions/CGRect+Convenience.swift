@@ -21,7 +21,7 @@ extension CGRect {
         return CGPoint(x: midX, y: midY)
     }
 
-    /// midpoint of the reciever
+    /// convert the reciever into a square, cropping the bottom or right
     public func squared() -> CGRect {
         return CGRect(x: origin.x, y: origin.y, width: max(size.width, size.height), height: max(size.width, size.height))
     }
