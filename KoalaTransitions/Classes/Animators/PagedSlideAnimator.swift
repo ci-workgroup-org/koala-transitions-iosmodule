@@ -35,8 +35,8 @@ open class PagedSlideAnimator: NSObject, Animator {
     }
 
     open func animateTransition(using context: UIViewControllerContextTransitioning) {
-        guard let toView = context.view(forKey: UITransitionContextViewKey.to),
-            let fromView = context.view(forKey: UITransitionContextViewKey.from) else { return }
+        guard let toView = context.viewController(forKey: .to)?.view,
+            let fromView = context.viewController(forKey: .from)?.view else { return }
 
         switch playDirection {
         case .forward:
@@ -52,7 +52,7 @@ open class PagedSlideAnimator: NSObject, Animator {
                 completion: { _ in
                     fromView.transform = CGAffineTransform(translationX: 0, y: 0)
                     toView.transform = CGAffineTransform(translationX: 0, y: 0)
-                    context.completeTransition(!context.transitionWasCancelled)
+                    // context.completeTransition(!context.transitionWasCancelled)
                 }
             )
         case .backward:
@@ -64,10 +64,6 @@ open class PagedSlideAnimator: NSObject, Animator {
                 animations: {
                     fromView.transform = CGAffineTransform(translationX: fromView.width / self.dismissOverTakeRatio, y: 0)
                     toView.transform = CGAffineTransform(translationX: 0, y: 0)
-                },
-                completion: { _ in
-                    fromView.removeFromSuperview()
-                    context.completeTransition(!context.transitionWasCancelled)
                 }
             )
         }

@@ -35,9 +35,8 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView
 
-        guard let toView = transitionContext.view(forKey: .to),
-            let fromView = transitionContext.view(forKey: .from)
-        else { return }
+        guard let toView = transitionContext.viewController(forKey: .to)?.view,
+            let fromView = transitionContext.viewController(forKey: .from)?.view else { return }
 
         let initialFrame: CGRect
         let finalFrame: CGRect
@@ -76,10 +75,6 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
                 animations: {
                     toView.transform = CGAffineTransform.identity
                     toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-
-                },
-                completion: { _ in
-                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
 
@@ -105,10 +100,6 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
                 animations: {
                     fromView.transform = scaleTransform
                     fromView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-
-                },
-                completion: { _ in
-                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
 

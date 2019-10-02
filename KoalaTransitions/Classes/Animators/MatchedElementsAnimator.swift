@@ -35,9 +35,8 @@ public class MatchedElementsAnimator: NSObject, Animator {
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView
 
-        guard let toView = transitionContext.view(forKey: .to),
-            let fromView = transitionContext.view(forKey: .from)
-        else { return }
+        guard let toView = transitionContext.viewController(forKey: .to)?.view,
+            let fromView = transitionContext.viewController(forKey: .from)?.view else { return }
 
         switch playDirection {
         case .forward:
@@ -124,7 +123,6 @@ public class MatchedElementsAnimator: NSObject, Animator {
                 },
                 completion: { _ in
                     // animatableViews.removeSnapshotViews()
-                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
         }

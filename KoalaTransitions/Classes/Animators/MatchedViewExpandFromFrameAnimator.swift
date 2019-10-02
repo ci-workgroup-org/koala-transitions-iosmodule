@@ -56,8 +56,8 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let containerView = transitionContext.containerView
 
-        guard let toView = transitionContext.view(forKey: .to),
-            let fromView = transitionContext.view(forKey: .from),
+        guard let toView = transitionContext.viewController(forKey: .to)?.view,
+            let fromView = transitionContext.viewController(forKey: .from)?.view,
             let toViewController = transitionContext.viewController(forKey: .to)
         else { return }
 
@@ -115,10 +115,6 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                     let imageScaleTransform = finalViewFrame.scaleTransform(to: self.originFrame)
                     self.originImageView.transform = imageScaleTransform
                     self.originImageView.center = finalViewFrame.center
-
-                },
-                completion: { _ in
-                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
 
@@ -184,7 +180,6 @@ public class MatchedViewExpandFromFrameAnimator: NSObject, Animator {
                     self.originImageView.removeFromSuperview()
                     /// reset the original view
                     self.originView?.alpha = 1
-                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
                 }
             )
         }

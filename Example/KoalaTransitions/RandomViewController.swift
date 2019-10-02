@@ -40,7 +40,8 @@ class RandomViewController: UIViewController, CustomTransitionable {
 
     @objc func pressed() {
         let nextVC = RandomViewController()
-        let randomAnimator: Animator = [FadeAnimator(), SlideAnimator(direction: .fromBottomToTop), SlideAnimator(direction: .fromTopToBottom)].randomElement() ?? FadeAnimator()
+        let randomAnimator: Animator = [FadeAnimator(), SlideAnimator(direction: .fromBottomToTop), SlideAnimator(direction: .fromTopToBottom), PagedSlideAnimator()].randomElement() ?? FadeAnimator()
+
         nextVC.transitioner = Transitioner(animator: randomAnimator)
         navigationController?.pushViewController(nextVC, animated: true)
     }

@@ -32,23 +32,11 @@ public class FadeAnimator: NSObject, Animator {
             toView.alpha = 0.0
             UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
                 toView.alpha = 1.0
-            }, completion: { _ in
-                let success = !transitionContext.transitionWasCancelled
-                if !success {
-                    toView.removeFromSuperview()
-                }
-                transitionContext.completeTransition(success)
             })
         case .backward:
             container.insertSubview(toView, belowSubview: fromView)
             UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
                 fromView.alpha = 0.0
-            }, completion: { _ in
-                let success = !transitionContext.transitionWasCancelled
-                if !success {
-                    toView.removeFromSuperview()
-                }
-                transitionContext.completeTransition(success)
             })
         }
     }
