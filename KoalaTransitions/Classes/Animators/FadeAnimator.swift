@@ -21,23 +21,23 @@ public class FadeAnimator: NSObject, Animator {
         return duration
     }
 
-    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        guard let fromView = transitionContext.view(forKey: .from),
-            let toView = transitionContext.view(forKey: .to) else { return }
+    public func animateTransition(using context: UIViewControllerContextTransitioning) {
+        guard let fromView = context.view(forKey: .from),
+            let toView = context.view(forKey: .to) else { return }
 
-        let container = transitionContext.containerView
+        let container = context.containerView
         switch playDirection {
         case .forward:
             container.addSubview(toView)
             toView.alpha = 0.0
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+            UIView.animate(withDuration: transitionDuration(using: context), animations: {
                 toView.alpha = 1.0
-            })
+            }, completion: { _ in context.completeTransition(true) })
         case .backward:
             container.insertSubview(toView, belowSubview: fromView)
-            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+            UIView.animate(withDuration: transitionDuration(using: context), animations: {
                 fromView.alpha = 0.0
-            })
+            }, completion: { _ in context.completeTransition(true) })
         }
     }
 }

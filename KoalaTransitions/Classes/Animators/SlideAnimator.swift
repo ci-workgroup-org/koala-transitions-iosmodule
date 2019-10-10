@@ -65,6 +65,8 @@ public class SlideAnimator: NSObject, Animator {
                 },
                 completion: { _ in
                     toViewController.view.transform = CGAffineTransform(translationX: 0, y: 0)
+
+                    context.completeTransition(true)
                 }
             )
         case .backward:
@@ -87,8 +89,9 @@ public class SlideAnimator: NSObject, Animator {
                     fromViewController.view.transform = transform
                 },
                 completion: { _ in
-                    // fromViewController.view.transform = transform
+                    fromViewController.view.transform = transform
                     fromViewController.view.removeFromSuperview()
+                    context.completeTransition(true)
                 }
             )
         }

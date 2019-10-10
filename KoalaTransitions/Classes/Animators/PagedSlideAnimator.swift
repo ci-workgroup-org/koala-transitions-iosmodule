@@ -52,7 +52,7 @@ open class PagedSlideAnimator: NSObject, Animator {
                 completion: { _ in
                     fromView.transform = CGAffineTransform(translationX: 0, y: 0)
                     toView.transform = CGAffineTransform(translationX: 0, y: 0)
-                    // context.completeTransition(!context.transitionWasCancelled)
+                    context.completeTransition(true)
                 }
             )
         case .backward:
@@ -64,6 +64,7 @@ open class PagedSlideAnimator: NSObject, Animator {
                 animations: {
                     fromView.transform = CGAffineTransform(translationX: fromView.width / self.dismissOverTakeRatio, y: 0)
                     toView.transform = CGAffineTransform(translationX: 0, y: 0)
+                    context.completeTransition(true)
                 }
             )
         }

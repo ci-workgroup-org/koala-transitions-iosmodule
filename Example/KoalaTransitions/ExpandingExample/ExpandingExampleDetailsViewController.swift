@@ -68,8 +68,7 @@ extension ExpandingExample {
                 make.top.equalTo(topView.snp.bottom).offset(30)
             }
             text.text = """
-                        Many times, readers will get distracted by readable text when looking at the layout of a page. Instead of using filler text that says “Insert content here,” Lorem Ipsum uses a normal distribution of letters, making it resemble standard English.
-                        
+                        Many times, readers will get distracted by readable text when looking at the layout of a page. Instead of using filler text that says “Insert content here,” Lorem Ipsum uses a normal distribution of letters, making it resemble standard English.\n
                         This makes it easier for designers to focus on visual elements, as opposed to what the text on a page actually says.
             """
         }

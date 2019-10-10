@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         let navVC = AnimatedNavigationController(rootViewController: FirstViewController())
-        navVC.transitioner = Transitioner(animator: SlideAnimator(direction: .fromBottomToTop))
+        navVC.transitioner = Transitioner(animator: PagedSlideAnimator())
         navVC.title = "AnimatedNav"
 
         let navVC2 = MultiAnimatedNavigationController(rootViewController: RandomViewController())

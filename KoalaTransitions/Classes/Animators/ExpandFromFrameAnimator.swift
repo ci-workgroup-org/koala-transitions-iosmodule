@@ -32,11 +32,11 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
         return duration
     }
 
-    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let containerView = transitionContext.containerView
+    public func animateTransition(using context: UIViewControllerContextTransitioning) {
+        let containerView = context.containerView
 
-        guard let toView = transitionContext.viewController(forKey: .to)?.view,
-            let fromView = transitionContext.viewController(forKey: .from)?.view else { return }
+        guard let toView = context.viewController(forKey: .to)?.view,
+            let fromView = context.viewController(forKey: .from)?.view else { return }
 
         let initialFrame: CGRect
         let finalFrame: CGRect
@@ -75,7 +75,7 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
                 animations: {
                     toView.transform = CGAffineTransform.identity
                     toView.center = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
-                }
+                }, completion: { _ in context.completeTransition(true) }
             )
 
         case .backward:
@@ -105,7 +105,7 @@ public class ExpandFromFrameAnimator: NSObject, Animator {
 
             UIView.animate(withDuration: duration * 0.6, delay: duration * 0.4, animations: {
                 fromView.alpha = 0.0
-            })
+            }, completion: { _ in context.completeTransition(true) })
         }
     }
 }

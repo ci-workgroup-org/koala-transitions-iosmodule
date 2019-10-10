@@ -25,12 +25,20 @@ extension CustomTransitionable {
         if let navController = self as? UINavigationController {
             navController.delegate = transitioner
         }
+        if #available(iOS 13.0, *) {
+            self.modalPresentationStyle = .fullScreen
+            self.isModalInPresentation = true
+        }
     }
 
     func setTransitioningDelegateToTransitioner() {
         transitioningDelegate = transitioner
         if let navController = self as? UINavigationController {
             navController.delegate = transitioner
+        }
+        if #available(iOS 13.0, *) {
+            self.modalPresentationStyle = .fullScreen
+            self.isModalInPresentation = true
         }
     }
 

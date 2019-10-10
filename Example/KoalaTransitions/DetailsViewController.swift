@@ -44,6 +44,10 @@ class DetailsViewController: UIViewController, CustomTransitionable {
             make.top.equalTo(bottomLeftView)
             make.leading.equalTo(bottomLeftView.snp.trailing)
         }
+        if #available(iOS 13.0, *) {
+            self.modalPresentationStyle = .fullScreen
+            self.isModalInPresentation = true
+        }
     }
 
     @objc func actionClose(_: UITapGestureRecognizer) {

@@ -32,11 +32,11 @@ public class MatchedElementsAnimator: NSObject, Animator {
         return duration
     }
 
-    public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let containerView = transitionContext.containerView
+    public func animateTransition(using context: UIViewControllerContextTransitioning) {
+        let containerView = context.containerView
 
-        guard let toView = transitionContext.viewController(forKey: .to)?.view,
-            let fromView = transitionContext.viewController(forKey: .from)?.view else { return }
+        guard let toView = context.viewController(forKey: .to)?.view,
+            let fromView = context.viewController(forKey: .from)?.view else { return }
 
         switch playDirection {
         case .forward:
@@ -77,7 +77,7 @@ public class MatchedElementsAnimator: NSObject, Animator {
                 },
                 completion: { _ in
                     animatableViews.removeSnapshotViews()
-                    transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                    context.completeTransition(true)
                     underImageView.removeFromSuperview()
                 }
             )
@@ -111,6 +111,7 @@ public class MatchedElementsAnimator: NSObject, Animator {
 
                 },
                 completion: { _ in
+                    context.completeTransition(true)
                 }
             )
 
