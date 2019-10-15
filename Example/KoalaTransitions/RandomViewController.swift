@@ -36,11 +36,6 @@ class RandomViewController: UIViewController, CustomTransitionable {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
         button.setTitle("Next", for: .normal)
         button.addTarget(self, action: #selector(pressed), for: .touchUpInside)
-
-        if #available(iOS 13.0, *) {
-            self.modalPresentationStyle = .fullScreen
-            self.isModalInPresentation = true
-        }
     }
 
     @objc func pressed() {
