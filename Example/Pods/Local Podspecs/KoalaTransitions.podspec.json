@@ -1,6 +1,6 @@
 {
   "name": "KoalaTransitions",
-  "version": "0.0.1",
+  "version": "0.0.12",
   "summary": "Provide Controller to Controller tansitions",
   "description": "Provide Controller to Controller tansitions required for KoalaMobile, replacing Hero",
   "homepage": "https://github.com/fuzz-productions/koala-transitions-iosmodule",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "git@github.com:fuzz-productions/koala-transitions-iosmodule.git",
-    "tag": "0.0.1"
+    "tag": "0.0.12"
   },
   "platforms": {
     "ios": "11.0"
