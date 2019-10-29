@@ -10,14 +10,14 @@ import Foundation
 
 extension CGRect {
     /// scale Transform from the receiver to the incoming rect
-    func scaleTransform(to: CGRect) -> CGAffineTransform {
+    public func scaleTransform(to: CGRect) -> CGAffineTransform {
         let xScaleFactor = width / to.width
         let yScaleFactor = height / to.height
         return CGAffineTransform(scaleX: xScaleFactor, y: yScaleFactor)
     }
 
     /// midpoint of the reciever
-    var center: CGPoint {
+    public var center: CGPoint {
         return CGPoint(x: midX, y: midY)
     }
 

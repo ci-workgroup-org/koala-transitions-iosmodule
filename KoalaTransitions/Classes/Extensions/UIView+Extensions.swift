@@ -14,14 +14,14 @@ extension UIView {
     }
 
     /// returns the receiver's width frame
-    public var width: CGFloat {
+    var width: CGFloat {
         return frame.size.width
     }
 
     /// Convert a UIView into a UIImage.
     ///
     /// - Returns: An image represented the view.
-    public func snapshot() -> UIImage {
+    func snapshot() -> UIImage {
         UIGraphicsBeginImageContextWithOptions(bounds.size, isOpaque, 0.0)
 
         defer { UIGraphicsEndImageContext() }
